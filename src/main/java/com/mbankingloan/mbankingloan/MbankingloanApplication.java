@@ -1,0 +1,13 @@
+package com.mbankingloan.mbankingloan;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MbankingloanApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MbankingloanApplication.class, args);
+	}
+
+}
