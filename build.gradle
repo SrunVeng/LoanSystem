@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.mbankingloan'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
 	toolchain {
@@ -30,7 +30,6 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-
 
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
