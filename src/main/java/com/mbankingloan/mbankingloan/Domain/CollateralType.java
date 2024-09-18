@@ -1,0 +1,29 @@
+package com.mbankingloan.mbankingloan.Domain;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@Entity
+@Table(name = "collateral_types")
+public class CollateralType {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+
+    private String title;
+
+    @ManyToOne
+    private Loan loan;
+
+
+
+
+}
