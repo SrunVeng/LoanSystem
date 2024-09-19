@@ -8,6 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-
+    // to generate staffID prevent Duplicate
+    boolean existsByStaffId(String staffId);
+    // validateEmail
+    boolean existsByemail(String email);
+    // validatePhoneNumber
+    boolean existsByphoneNumber(String phoneNumber);
 
 }

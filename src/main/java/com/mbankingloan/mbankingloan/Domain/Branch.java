@@ -4,7 +4,7 @@ package com.mbankingloan.mbankingloan.Domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,6 +21,9 @@ public class Branch {
 
     private String name;
     private String code;
+
+    @OneToMany
+    private List<User> user;
 
 
 

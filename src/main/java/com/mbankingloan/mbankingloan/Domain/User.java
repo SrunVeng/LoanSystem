@@ -22,16 +22,23 @@ public class User {
 
     private String staffId;
 
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(unique = true,nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(length = 10, unique = true, nullable = false)
     private String phoneNumber;
 
-    @OneToOne
+    @ManyToOne(optional = false)
     private Branch branchCode;
 
+    @Column(nullable = false)
     private LocalDate birthDate;
+    @Column(nullable = false)
     private LocalDate hireDate;
 
     private String provinceCity;
@@ -47,8 +54,11 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
+    @Column(nullable = false)
     private List<Role> roles;
 
+
+    //System Generate
     private LocalDate createdAt;
     private Boolean isVerified;
     private Boolean isBlock;
