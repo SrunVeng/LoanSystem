@@ -20,14 +20,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer staffId;
+    private String staffId;
 
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String phoneNumber;
-    private String branchCode;
+
+    @OneToOne
+    private Branch branchCode;
+
     private LocalDate birthDate;
     private LocalDate hireDate;
 
@@ -38,8 +41,24 @@ public class User {
 
     private String position;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
     private List<Role> roles;
+
+    private LocalDate createdAt;
+    private Boolean isVerified;
+    private Boolean isBlock;
+
+
+    //Security
+    private Boolean isAccountNonExpired;
+    private Boolean isAccountNonLocked;
+    private Boolean isCredentialsNonExpired;
+    private Boolean isDeleted;
 
 
 }

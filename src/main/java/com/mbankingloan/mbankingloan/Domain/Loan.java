@@ -24,15 +24,12 @@ public class Loan {
 
     private BigDecimal amountLimit;
 
-    @OneToMany
+    @ManyToMany
     private List<CollateralType> collateralTypes;
 
     private BigDecimal moa;
 
     private BigDecimal interestRate;
-
-
-    private Boolean isDrawDown;
 
 
     @ManyToOne

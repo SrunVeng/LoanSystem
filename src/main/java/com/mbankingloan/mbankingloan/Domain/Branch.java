@@ -4,25 +4,24 @@ package com.mbankingloan.mbankingloan.Domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.time.LocalTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 @Builder
 @AllArgsConstructor
-@Entity
-@Table(name = "loantypes")
-public class LoanType {
+@Table(name = "branchs")
+public class Branch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
+    private String code;
 
-    @OneToMany(mappedBy = "loantype")
-    private List<Loan> loans;
 
 
 }

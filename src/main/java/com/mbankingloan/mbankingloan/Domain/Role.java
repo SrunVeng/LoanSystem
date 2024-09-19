@@ -4,6 +4,8 @@ package com.mbankingloan.mbankingloan.Domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,8 +21,8 @@ public class Role {
 
     private String name;
 
-    @ManyToOne
-    private User user;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
 
 }

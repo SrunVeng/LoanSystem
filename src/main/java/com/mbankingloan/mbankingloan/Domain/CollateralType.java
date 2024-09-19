@@ -20,8 +20,7 @@ public class CollateralType {
 
     private String title;
 
-    @ManyToOne
-    private Loan loan;
+
 
 
 

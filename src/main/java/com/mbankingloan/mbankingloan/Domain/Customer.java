@@ -71,6 +71,8 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<CustomerAccount> customerAccount;
 
+    @OneToOne
+    private Branch branchCode;
 
 
 }
