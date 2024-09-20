@@ -3,6 +3,8 @@ package com.mbankingloan.mbankingloan.Domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class CollateralType {
 
     private String title;
 
-
+    private BigDecimal moa;
 
 
 

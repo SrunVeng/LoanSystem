@@ -57,15 +57,19 @@ public class DataInit {
 
         CollateralType collateralType1 = CollateralType.builder()
                 .title("Hard-Title-Deed")
+                .moa(BigDecimal.valueOf(0.8))
                 .build();
         CollateralType collateralType2 = CollateralType.builder()
                 .title("Soft-Title-Deed")
+                .moa(BigDecimal.valueOf(0.5))
                 .build();
         CollateralType collateralType3 = CollateralType.builder()
                 .title("Fixed-Deposit-Certificate")
+                .moa(BigDecimal.valueOf(1.0))
                 .build();
         CollateralType collateralType4 = CollateralType.builder()
                 .title("Income-Statement")
+                .moa(BigDecimal.valueOf(1.0))
                 .build();
         collateralTypeRepository.saveAll(List.of(collateralType1, collateralType2, collateralType3, collateralType4));
 
@@ -95,7 +99,6 @@ public class DataInit {
                 .interestRate(BigDecimal.valueOf(18.00))
                 .loantype(termLoan)
                 .collateralTypes(allCollateralTypes)
-                .moa(BigDecimal.valueOf(1.00))
                 .build();
 
         Loan microBusinessLoan = Loan.builder()
@@ -104,7 +107,6 @@ public class DataInit {
                 .interestRate(BigDecimal.valueOf(17.50))
                 .loantype(termLoan)
                 .collateralTypes(hardSoftFixedCollateralTypes)
-                .moa(BigDecimal.valueOf(0.8))
                 .build();
 
         Loan smallBusinessLoan = Loan.builder()
@@ -113,7 +115,6 @@ public class DataInit {
                 .interestRate(BigDecimal.valueOf(15.85))
                 .loantype(termLoan)
                 .collateralTypes(hardFixedCollateralTypes)
-                .moa(BigDecimal.valueOf(0.8))
                 .build();
 
         Loan mediumBusinessLoan = Loan.builder()
@@ -122,7 +123,6 @@ public class DataInit {
                 .interestRate(BigDecimal.valueOf(13.85))
                 .loantype(termLoan)
                 .collateralTypes(hardFixedCollateralTypes)
-                .moa(BigDecimal.valueOf(0.8))
                 .build();
 
         Loan largeBusinessLoan = Loan.builder()
@@ -131,7 +131,6 @@ public class DataInit {
                 .interestRate(BigDecimal.valueOf(13.85))
                 .loantype(termLoan)
                 .collateralTypes(hardFixedCollateralTypes)
-                .moa(BigDecimal.valueOf(0.8))
                 .build();
 
         Loan commercialBusinessLoan = Loan.builder()
@@ -140,7 +139,6 @@ public class DataInit {
                 .interestRate(BigDecimal.valueOf(13.85))
                 .loantype(termLoan)
                 .collateralTypes(hardFixedCollateralTypes)
-                .moa(BigDecimal.valueOf(0.8))
                 .build();
 
         loanRepository.saveAll(List.of(personalLoan, microBusinessLoan, smallBusinessLoan,mediumBusinessLoan,largeBusinessLoan,commercialBusinessLoan));
@@ -198,12 +196,15 @@ public class DataInit {
                 .name("MANAGER")
                 .build();
         Role role5 = Role.builder()
-                .name("OFFICER")
+                .name("LOAN-OFFICER")
                 .build();
         Role role6 = Role.builder()
+                .name("CSA-OFFICER")
+                .build();
+        Role role7 = Role.builder()
                 .name("CUSTOMER")
                 .build();
-        roleRepository.saveAll(List.of(role1,role2,role3,role4,role5,role6));
+        roleRepository.saveAll(List.of(role1,role2,role3,role4,role5,role6,role7));
 
     }
 

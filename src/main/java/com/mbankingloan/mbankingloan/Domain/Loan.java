@@ -27,7 +27,7 @@ public class Loan {
     @ManyToMany
     private List<CollateralType> collateralTypes;
 
-    private BigDecimal moa;
+
 
     private BigDecimal interestRate;
 

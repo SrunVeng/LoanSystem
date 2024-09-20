@@ -21,8 +21,8 @@ public class LoanType {
 
     private String name;
 
-    @OneToMany(mappedBy = "loantype")
-    private List<Loan> loans;
+//    @OneToMany(mappedBy = "loantype")
+//    private List<Loan> loans;
 
 
 }

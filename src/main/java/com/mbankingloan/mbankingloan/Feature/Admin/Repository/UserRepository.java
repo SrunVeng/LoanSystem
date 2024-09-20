@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // validatePhoneNumber
     boolean existsByphoneNumber(String phoneNumber);
 
+    boolean existsByfirstName(String firstName);
+    boolean existsBylastName(String lastName);
+
 }

@@ -33,8 +33,6 @@ public record RegisterUser(
         Integer branchCodeId,
 
         @NotNull(message = "RoleId is required")
-        @Size(min = 1, max = 6, message = "rolesId list must contain between 1 and 6 elements")
-        List<@Min(value = 1, message = "rolesId must be at least 1")
-        @Max(value = 6, message = "rolesId must be at most 6") Integer> rolesId
+        List<Integer> rolesId
 ) {
 }
