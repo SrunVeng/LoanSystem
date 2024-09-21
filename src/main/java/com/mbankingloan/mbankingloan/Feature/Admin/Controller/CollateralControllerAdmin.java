@@ -3,6 +3,8 @@ package com.mbankingloan.mbankingloan.Feature.Admin.Controller;
 
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.CollateralRequest;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateCollateralType;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteCollateralType;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverCollateralType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseCollateralType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,18 @@ public class CollateralControllerAdmin {
     @PostMapping("/createCollateralType")
     ResponseCollateralType createLoanType(@Valid @RequestBody CreateCollateralType createCollateral) {
        return collateralRequest.createCollateralType(createCollateral);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/deleteCollateralType")
+    ResponseCollateralType deleteLoanType(@Valid @RequestBody DeleteCollateralType deleteCollateral) {
+        return collateralRequest.deleteCollateralType(deleteCollateral);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/recoverCollateralType")
+    ResponseCollateralType recoverCollateralType(@Valid @RequestBody RecoverCollateralType recoverCollateral) {
+        return collateralRequest.recoverCollateralType(recoverCollateral);
     }
 
 

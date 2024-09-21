@@ -22,7 +22,6 @@ public class EmailVerification {
     private User user;
 
 
-
     private String verificationCode;
 
     private LocalTime expiryTime;

@@ -21,6 +21,8 @@ public class LoanType {
 
     private String name;
 
+    private Boolean isDeleted;
+
 //    @OneToMany(mappedBy = "loantype")
 //    private List<Loan> loans;
 

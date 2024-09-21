@@ -17,6 +17,8 @@ public record CreateLoan(
 
         BigDecimal moa,
 
+        Integer tenure,
+
         BigDecimal interestRate,
 
         Integer loanTypeId

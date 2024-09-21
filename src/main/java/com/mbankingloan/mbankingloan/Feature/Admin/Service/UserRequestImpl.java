@@ -7,6 +7,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Repository.BranchRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.RoleRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.UserRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteUser;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RegisterUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.UpdateUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseUser;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -37,10 +39,10 @@ public class UserRequestImpl implements UserRequest {
     public ResponseUser registerUser(RegisterUser registerUser) {
 
         // Validate Email and Phone Number is Duplicate
-        if (userRepository.existsByemail(registerUser.email())) {
+        if (userRepository.existsByEmail(registerUser.email())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
         }
-        if (userRepository.existsByphoneNumber(registerUser.email())) {
+        if (userRepository.existsByPhoneNumber(registerUser.email())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "PhoneNumber already exists");
         }
 
@@ -51,8 +53,7 @@ public class UserRequestImpl implements UserRequest {
         }
 
         User newUser = userMapper.fromUserRegister(registerUser);
-        Branch branch = branchRepository.findById(registerUser.branchCodeId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Branch Not Found"));
+        Branch branch = branchRepository.findById(registerUser.branchCodeId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Branch Not Found"));
         newUser.setRoles(roles);
         newUser.setBranchCode(branch);
         newUser.setCreatedAt(LocalDate.now());
@@ -65,7 +66,6 @@ public class UserRequestImpl implements UserRequest {
         newUser.setStaffId(generateStaffID.generateStaffId());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
-
         return userMapper.toUserResponse(newUser);
     }
 
@@ -75,20 +75,24 @@ public class UserRequestImpl implements UserRequest {
     }
 
     @Override
+    @Transactional
     public ResponseUser deleteUserByid(DeleteUser deleteUser) {
 
         if (!userRepository.existsById(deleteUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
         }
 
-        if (!userRepository.existsByfirstName(deleteUser.firstName())) {
+        if (!userRepository.existsByFirstName(deleteUser.firstName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User FirstName Not Found");
         }
-        if (!userRepository.existsBylastName(deleteUser.lastName())) {
+        if (!userRepository.existsByLastName(deleteUser.lastName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User LastName Not Found");
         }
 
-        User user = userRepository.findById(deleteUser.id()).orElseThrow();
+        // check 3
+
+        User user = userRepository.findByIdAndFirstNameAndLastName(deleteUser.id(), deleteUser.firstName(), deleteUser.lastName()).orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "ID firstName and lastName of User does not match"));
+
         user.setIsDeleted(true);
 
         return userMapper.toUserResponse(userRepository.findById(deleteUser.id()).orElseThrow());
@@ -96,24 +100,26 @@ public class UserRequestImpl implements UserRequest {
     }
 
     @Override
+    @Transactional
     public void permanentlyDeleteUserById(DeleteUser deleteUser) {
 
         if (!userRepository.existsById(deleteUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
         }
 
-        if (!userRepository.existsByfirstName(deleteUser.firstName())) {
+        if (!userRepository.existsByFirstName(deleteUser.firstName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User FirstName Not Found");
         }
-        if (!userRepository.existsBylastName(deleteUser.lastName())) {
+        if (!userRepository.existsByLastName(deleteUser.lastName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User LastName Not Found");
         }
+        userRepository.deleteByIdAndFirstNameAndLastName(deleteUser.id(), deleteUser.firstName(), deleteUser.lastName()).orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "ID firstName and lastName of User does not match"));
 
-        userRepository.deleteById(deleteUser.id());
 
     }
 
     @Override
+    @Transactional
     public ResponseUser updateUserByid(UpdateUser updateUser) {
         if (!userRepository.existsById(updateUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
@@ -121,8 +127,7 @@ public class UserRequestImpl implements UserRequest {
         User user = userRepository.findById(updateUser.id()).orElseThrow();
 // Update branch if present
         if (updateUser.BranchId() != null) {
-            Branch newBranch = branchRepository.findById(updateUser.BranchId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Branch Not Found"));
+            Branch newBranch = branchRepository.findById(updateUser.BranchId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Branch Not Found"));
             user.setBranchCode(newBranch);
         }
 
@@ -138,8 +143,31 @@ public class UserRequestImpl implements UserRequest {
 // Apply remaining updates
         userMapper.fromUpdateUserRequestPartially(user, updateUser);
         userRepository.save(user);
-
         return userMapper.toUserResponse(user);
+
+    }
+
+    @Override
+    @Transactional
+    public ResponseUser recoverUserByid(RecoverUser recoverUser) {
+
+        if (!userRepository.existsById(recoverUser.id())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
+        }
+
+        if (!userRepository.existsByFirstName(recoverUser.firstName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User FirstName Not Found");
+        }
+        if (!userRepository.existsByLastName(recoverUser.lastName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User LastName Not Found");
+        }
+
+
+        User user = userRepository.findByIdAndFirstNameAndLastName(recoverUser.id(), recoverUser.firstName(), recoverUser.lastName()).orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "ID firstName and lastName of User does not match"));
+
+        user.setIsDeleted(false);
+
+        return userMapper.toUserResponse(userRepository.findById(recoverUser.id()).orElseThrow());
 
     }
 }

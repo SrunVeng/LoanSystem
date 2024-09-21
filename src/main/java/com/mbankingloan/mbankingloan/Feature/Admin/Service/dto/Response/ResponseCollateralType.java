@@ -7,7 +7,10 @@ public record ResponseCollateralType(
         Integer id,
         String title,
 
-        BigDecimal moa
+        BigDecimal moa,
+
+        Boolean isDeleted
+
 ){
 
 }

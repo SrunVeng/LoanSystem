@@ -24,6 +24,8 @@ public class CollateralType {
 
     private BigDecimal moa;
 
+    private Boolean isDeleted;
+
 
 
 

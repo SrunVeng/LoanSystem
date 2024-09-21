@@ -3,13 +3,12 @@ package com.mbankingloan.mbankingloan.Feature.Admin.Service;
 
 import com.mbankingloan.mbankingloan.Domain.Branch;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.BranchRepository;
-
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateBranch;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteBranch;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverBranch;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseBranch;
-
 import com.mbankingloan.mbankingloan.Mapper.BranchMapper;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,10 +27,10 @@ public class BranchRequestImpl implements BranchRequest {
     @Override
     public ResponseBranch createBranch(CreateBranch createBranch) {
 
-        if(branchRepository.existsByname(createBranch.name())){
+        if (branchRepository.existsByName(createBranch.name())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Branch name already exists");
         }
-        if(branchRepository.existsBycode(createBranch.code())){
+        if (branchRepository.existsByCode(createBranch.code())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Branch code already exists");
         }
 
@@ -48,6 +47,33 @@ public class BranchRequestImpl implements BranchRequest {
     @Override
     public List<ResponseBranch> getAllBranch() {
         return branchMapper.toBranchResponseList(branchRepository.findAll());
+    }
+
+    @Override
+    public ResponseBranch deleteBranch(DeleteBranch deleteBranch) {
+        if (!branchRepository.existsById(deleteBranch.id())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan ID not found");
+        }
+        if (!branchRepository.existsByCode(deleteBranch.code())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Branch Code not found");
+        }
+
+        Branch branch = branchRepository.findByIdAndCode(deleteBranch.id(), deleteBranch.code()).orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Name and Code of Branch do not match"));
+        branch.setIsDeleted(true);
+
+        return branchMapper.toBranchResponse(branch);
+    }
+
+    @Override
+    public ResponseBranch recoverBranch(RecoverBranch recoverBranch) {
+
+        if (!branchRepository.existsById(recoverBranch.id())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan ID not found");
+        }
+
+        Branch branch = branchRepository.findById(recoverBranch.id()).orElseThrow();
+        branch.setIsDeleted(false);
+        return branchMapper.toBranchResponse(branch);
     }
 
 

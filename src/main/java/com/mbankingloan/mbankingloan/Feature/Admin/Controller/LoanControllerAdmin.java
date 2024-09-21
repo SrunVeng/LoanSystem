@@ -3,8 +3,7 @@ package com.mbankingloan.mbankingloan.Feature.Admin.Controller;
 
 
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.LoanRequest;
-import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoan;
-import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoanType;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.*;
 
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
@@ -46,7 +45,30 @@ public class  LoanControllerAdmin {
         return loanRequest.createLoan(createLoan);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/deleteLoanById")
+    ResponseLoan deleteLoanById(@Valid @RequestBody DeleteLoan deleteLoan) {
+        return loanRequest.deleteLoanByid(deleteLoan);
+    }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/recoverLoanById")
+    ResponseLoan recoverLoanById(@Valid @RequestBody RecoverLoan recoverLoan) {
+        return loanRequest.recoverLoanByid(recoverLoan);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/deleteLoanTypeById")
+    ResponseLoanType deleteLoanTypeById(@Valid @RequestBody DeleteLoan deleteLoan) {
+        return loanRequest.deleteLoanTypeByid(deleteLoan);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/recoverLoanTypeById")
+    ResponseLoanType recoverLoanTypeById(@Valid @RequestBody RecoverLoanType recoverLoanType) {
+        return loanRequest.recoverLoanTypeByid(recoverLoanType);
+    }
 
 
 

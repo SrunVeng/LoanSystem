@@ -3,6 +3,7 @@ package com.mbankingloan.mbankingloan.Feature.Admin.Controller;
 
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.UserRequest;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteUser;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RegisterUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.UpdateUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseUser;
@@ -36,6 +37,12 @@ public class UserControllerAdmin {
     @PutMapping("/deleteUserById")
     ResponseUser deleteUserById(@Valid @RequestBody DeleteUser deleteUser) {
         return userRequest.deleteUserByid(deleteUser);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/recoverUserById")
+    ResponseUser recoverUserById(@Valid @RequestBody RecoverUser recoverUser) {
+        return userRequest.recoverUserByid(recoverUser);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

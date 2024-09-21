@@ -41,14 +41,17 @@ public class DataInit {
 
         LoanType loanType1 = LoanType.builder()
                 .name("TermLoan")
+                .isDeleted(false)
                 .build();
 
         LoanType loanType2 = LoanType.builder()
                 .name("OverDaft")
+                .isDeleted(false)
                 .build();
 
         LoanType loanType3 = LoanType.builder()
                 .name("HomeLoan")
+                .isDeleted(false)
                 .build();
         loanTypeRepository.saveAll(List.of(loanType1, loanType2, loanType3));
     }
@@ -58,18 +61,22 @@ public class DataInit {
         CollateralType collateralType1 = CollateralType.builder()
                 .title("Hard-Title-Deed")
                 .moa(BigDecimal.valueOf(0.8))
+                .isDeleted(false)
                 .build();
         CollateralType collateralType2 = CollateralType.builder()
                 .title("Soft-Title-Deed")
                 .moa(BigDecimal.valueOf(0.5))
+                .isDeleted(false)
                 .build();
         CollateralType collateralType3 = CollateralType.builder()
                 .title("Fixed-Deposit-Certificate")
                 .moa(BigDecimal.valueOf(1.0))
+                .isDeleted(false)
                 .build();
         CollateralType collateralType4 = CollateralType.builder()
                 .title("Income-Statement")
                 .moa(BigDecimal.valueOf(1.0))
+                .isDeleted(false)
                 .build();
         collateralTypeRepository.saveAll(List.of(collateralType1, collateralType2, collateralType3, collateralType4));
 
@@ -98,6 +105,8 @@ public class DataInit {
                 .amountLimit(BigDecimal.valueOf(20000))
                 .interestRate(BigDecimal.valueOf(18.00))
                 .loantype(termLoan)
+                .tenure(120)
+                .isDeleted(false)
                 .collateralTypes(allCollateralTypes)
                 .build();
 
@@ -106,6 +115,8 @@ public class DataInit {
                 .amountLimit(BigDecimal.valueOf(50000))
                 .interestRate(BigDecimal.valueOf(17.50))
                 .loantype(termLoan)
+                .tenure(120)
+                .isDeleted(false)
                 .collateralTypes(hardSoftFixedCollateralTypes)
                 .build();
 
@@ -114,6 +125,8 @@ public class DataInit {
                 .amountLimit(BigDecimal.valueOf(100000))
                 .interestRate(BigDecimal.valueOf(15.85))
                 .loantype(termLoan)
+                .tenure(120)
+                .isDeleted(false)
                 .collateralTypes(hardFixedCollateralTypes)
                 .build();
 
@@ -122,6 +135,8 @@ public class DataInit {
                 .amountLimit(BigDecimal.valueOf(500000))
                 .interestRate(BigDecimal.valueOf(13.85))
                 .loantype(termLoan)
+                .tenure(120)
+                .isDeleted(false)
                 .collateralTypes(hardFixedCollateralTypes)
                 .build();
 
@@ -130,6 +145,8 @@ public class DataInit {
                 .amountLimit(BigDecimal.valueOf(2000000))
                 .interestRate(BigDecimal.valueOf(13.85))
                 .loantype(termLoan)
+                .tenure(120)
+                .isDeleted(false)
                 .collateralTypes(hardFixedCollateralTypes)
                 .build();
 
@@ -138,6 +155,8 @@ public class DataInit {
                 .amountLimit(BigDecimal.valueOf(10000000))
                 .interestRate(BigDecimal.valueOf(13.85))
                 .loantype(termLoan)
+                .tenure(120)
+                .isDeleted(false)
                 .collateralTypes(hardFixedCollateralTypes)
                 .build();
 
@@ -150,31 +169,38 @@ public class DataInit {
         Branch headOffice = Branch.builder()
                 .name("Head-Office")
                 .code("001")
+                .isDeleted(false)
                 .build();
 
         Branch branch1 = Branch.builder()
                 .name("Preah-Monivong")
                 .code("002")
+                .isDeleted(false)
                 .build();
         Branch branch2 = Branch.builder()
                 .name("Pshar-Tmey")
                 .code("003")
+                .isDeleted(false)
                 .build();
         Branch branch3 = Branch.builder()
                 .name("Pshar-DermThkov")
                 .code("004")
+                .isDeleted(false)
                 .build();
         Branch branch4 = Branch.builder()
                 .name("Pshar-DeyHouy")
                 .code("005")
+                .isDeleted(false)
                 .build();
         Branch branch5 = Branch.builder()
                 .name("Chrouy-Chongva")
                 .code("006")
+                .isDeleted(false)
                 .build();
         Branch branch6 = Branch.builder()
                 .name("Independent-Monument")
                 .code("006")
+                .isDeleted(false)
                 .build();
 
         branchRepository.saveAll(List.of(headOffice, branch1, branch2, branch3, branch4, branch5, branch6));

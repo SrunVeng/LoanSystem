@@ -3,6 +3,8 @@ package com.mbankingloan.mbankingloan.Feature.Admin.Controller;
 
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.BranchRequest;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateBranch;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteBranch;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverBranch;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseBranch;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,18 @@ public class BranchControllerAdmin {
     @PostMapping("/createBranch")
     ResponseBranch createBranch(@Valid @RequestBody CreateBranch createBranch) {
         return  branchRequest.createBranch(createBranch);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/deleteBranch")
+    ResponseBranch deleteBranch(@Valid @RequestBody DeleteBranch deleteBranch) {
+        return  branchRequest.deleteBranch(deleteBranch);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/recoverBranch")
+    ResponseBranch recoverBranch(@Valid @RequestBody RecoverBranch recoverBranch) {
+        return  branchRequest.recoverBranch(recoverBranch);
     }
 
 

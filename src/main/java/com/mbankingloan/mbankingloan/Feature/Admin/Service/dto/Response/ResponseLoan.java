@@ -20,6 +20,8 @@ public record ResponseLoan(
 
         BigDecimal interestRate,
 
+        Boolean isDeleted,
+
         LoanType loantype
 ) {
 }
