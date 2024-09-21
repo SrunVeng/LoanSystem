@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
         // create Date
         newCustomer.setCreatedAt(LocalDate.now());
         newCustomer.setIsVerified(false);
-        newCustomer.setIsBlock(true); // set to false when Customer set their own password
+        newCustomer.setIsBlock(true); //set to false when user verify with PhoneNumber
 
         // SetPasswordAndPin
         newCustomer.setCustomerCIFNumber(generateCustomerCIFNumber.generateCustomerCIFNumber());

@@ -58,13 +58,13 @@ public class UserRequestImpl implements UserRequest {
         newUser.setBranchCode(branch);
         newUser.setCreatedAt(LocalDate.now());
         newUser.setIsVerified(false);
-        newUser.setIsBlock(false);
+        newUser.setIsBlock(true);
         newUser.setIsDeleted(false);
         newUser.setIsAccountNonLocked(true);
         newUser.setIsCredentialsNonExpired(true);
         newUser.setIsAccountNonExpired(true);
         newUser.setStaffId(generateStaffID.generateStaffId());
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setPassword(passwordEncoder.encode("Mbanking@#123"));
         userRepository.save(newUser);
         return userMapper.toUserResponse(newUser);
     }
@@ -173,7 +173,7 @@ public class UserRequestImpl implements UserRequest {
 
     @Override
     public ResponseUser getUserById(int id) {
-        if(!userRepository.existsById(id)){
+        if (!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User Not Found");
         }
 

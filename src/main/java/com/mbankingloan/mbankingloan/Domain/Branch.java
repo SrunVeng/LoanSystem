@@ -25,7 +25,7 @@ public class Branch {
     @OneToMany
     private List<User> user;
 
-    Boolean isDeleted;
+    private Boolean isDeleted;
 
 
 

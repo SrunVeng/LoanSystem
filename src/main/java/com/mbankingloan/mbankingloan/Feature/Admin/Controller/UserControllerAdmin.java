@@ -34,7 +34,6 @@ public class UserControllerAdmin {
     }
 
 
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
     ResponseUser registerUser(@Valid @RequestBody RegisterUser registerUser) {

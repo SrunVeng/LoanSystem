@@ -22,8 +22,6 @@ public record RegisterUser(
         String email,
         @NotBlank(message = "Phone number is required")
         String phoneNumber,
-        @NotBlank(message = "Password is required")
-        String password,
         String provinceCity,
         String KhanDistrict,
         String village,
