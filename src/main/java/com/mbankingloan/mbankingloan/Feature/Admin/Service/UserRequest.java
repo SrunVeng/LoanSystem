@@ -17,11 +17,14 @@ public interface UserRequest {
 
        List<ResponseUser> getAllUsers();
 
-       ResponseUser deleteUserByid(DeleteUser deleteUser);
+       ResponseUser deleteUser(DeleteUser deleteUser);
 
-       void permanentlyDeleteUserById(DeleteUser deleteUser);
+       void permanentlyDeleteUser(DeleteUser deleteUser);
 
-       ResponseUser updateUserByid(UpdateUser updateUser);
+       ResponseUser updateUser(UpdateUser updateUser);
 
-       ResponseUser recoverUserByid( RecoverUser recoverUser);
+       ResponseUser recoverUser( RecoverUser recoverUser);
+
+
+     ResponseUser getUserById(int id);
 }

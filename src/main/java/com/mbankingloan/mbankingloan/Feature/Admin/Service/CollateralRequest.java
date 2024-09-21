@@ -18,4 +18,6 @@ public interface CollateralRequest {
        ResponseCollateralType deleteCollateralType(@Valid DeleteCollateralType deleteCollateral);
 
        ResponseCollateralType recoverCollateralType(@Valid RecoverCollateralType recoverCollateral);
+
+    ResponseCollateralType getCollateralTypeById(int id);
 }

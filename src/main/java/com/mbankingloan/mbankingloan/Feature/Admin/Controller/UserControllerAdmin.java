@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/admin/api/v1/user")
 public class UserControllerAdmin {
 
     private final UserRequest userRequest;
@@ -27,6 +27,14 @@ public class UserControllerAdmin {
         return userRequest.getAllUsers();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getUser/{id}")
+    ResponseUser getUserById(@PathVariable int id) {
+        return userRequest.getUserById(id);
+    }
+
+
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
     ResponseUser registerUser(@Valid @RequestBody RegisterUser registerUser) {
@@ -34,27 +42,27 @@ public class UserControllerAdmin {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/deleteUserById")
-    ResponseUser deleteUserById(@Valid @RequestBody DeleteUser deleteUser) {
-        return userRequest.deleteUserByid(deleteUser);
+    @PutMapping("/deleteUser")
+    ResponseUser deleteUser(@Valid @RequestBody DeleteUser deleteUser) {
+        return userRequest.deleteUser(deleteUser);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/recoverUserById")
-    ResponseUser recoverUserById(@Valid @RequestBody RecoverUser recoverUser) {
-        return userRequest.recoverUserByid(recoverUser);
+    @PutMapping("/recoverUser")
+    ResponseUser recoverUser(@Valid @RequestBody RecoverUser recoverUser) {
+        return userRequest.recoverUser(recoverUser);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/PermanentlyDeleteById")
-    void PermanentlyDeleteUserById(@Valid @RequestBody DeleteUser deleteUser) {
-         userRequest.permanentlyDeleteUserById(deleteUser);
+    @DeleteMapping("/PermanentlyDelete")
+    void PermanentlyDeleteUser(@Valid @RequestBody DeleteUser deleteUser) {
+         userRequest.permanentlyDeleteUser(deleteUser);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/updateUserById")
-    ResponseUser updateUserById(@Valid @RequestBody UpdateUser updateUser) {
-        return userRequest.updateUserByid(updateUser);
+    @PatchMapping("/updateUser")
+    ResponseUser updateUser(@Valid @RequestBody UpdateUser updateUser) {
+        return userRequest.updateUser(updateUser);
     }
 
 

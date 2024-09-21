@@ -21,8 +21,12 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String uuid;
+    private String customerCIFNumber;
 
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
 
     private LocalDate dateOfBirth;
     //@Pattern(regexp = "^0\\d{9}$", message = "Wrong Phone number format")
@@ -31,19 +35,13 @@ public class Customer {
     private String phoneNumber;
     @Column(nullable = false, unique = true, length = 50)
     private String nationalCardId;
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(unique = true, length = 50)
     private String email;
+
     @Column(nullable = false)
-    private String password;
-    @Column(nullable = false, length = 6)
-    private String pin;
-    private String name;
-    @Column(nullable = false, length = 10)
     private String gender;
     private String profileImageUrl;
-    private String oneSignalId;
-    @Column(unique = true, length = 50)
-    private String StudentIdCard;
+
 
 
     private String cityOrProvince;
@@ -51,15 +49,17 @@ public class Customer {
     private String employeeType;
     private String khanOrDistrict;
     private String mainSourceOfIncome;
-    private BigDecimal monthlyIncomeRange;
+    private BigDecimal monthlyIncome;
     private String position;
-    private String sangkatOrCommune;
-    private String street;
+    private String sangKatOrCommune;
     private String village;
+    private String street;
+
 
     private LocalDate createdAt;
     private Boolean isVerified;
     private Boolean isBlock;
+
 
 
     //Security
@@ -73,6 +73,9 @@ public class Customer {
 
     @OneToOne
     private Branch branchCode;
+
+    @OneToOne
+    private User use;
 
 
 }

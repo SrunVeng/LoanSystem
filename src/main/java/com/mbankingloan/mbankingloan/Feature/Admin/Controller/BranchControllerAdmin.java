@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/branch")
+@RequestMapping("/admin/api/v1/branch")
 public class BranchControllerAdmin {
 
     private final BranchRequest branchRequest;
@@ -24,6 +24,12 @@ public class BranchControllerAdmin {
     @GetMapping("/getAllBranches")
     List<ResponseBranch> getAllBranches() {
         return branchRequest.getAllBranch();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getBrancheById")
+    ResponseBranch getAllBranchById(@PathVariable int id) {
+        return branchRequest.getBranchById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

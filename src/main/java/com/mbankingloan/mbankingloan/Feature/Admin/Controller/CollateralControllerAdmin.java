@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/collateralType")
+@RequestMapping("/admin/api/v1/collateralType")
 public class CollateralControllerAdmin {
 
     private final CollateralRequest collateralRequest;
@@ -25,6 +25,13 @@ public class CollateralControllerAdmin {
     List<ResponseCollateralType> getAllCollateralTypes() {
         return collateralRequest.getAllCollateralTypes();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getCollateralTypeById/{id}")
+    ResponseCollateralType getCollateralTypeById(@PathVariable int id) {
+        return collateralRequest.getCollateralTypeById(id);
+    }
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/createCollateralType")
@@ -38,6 +45,7 @@ public class CollateralControllerAdmin {
         return collateralRequest.deleteCollateralType(deleteCollateral);
     }
 
+    // add more not just ID fix later
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/recoverCollateralType")
     ResponseCollateralType recoverCollateralType(@Valid @RequestBody RecoverCollateralType recoverCollateral) {

@@ -7,7 +7,9 @@ import jakarta.validation.constraints.NotNull;
 public record RecoverBranch(
 
         @NotNull(message = "ID is required")
-        Integer id
+        Integer id,
+        @NotBlank(message = "Code is required")
+        String code
 
 
 ) {

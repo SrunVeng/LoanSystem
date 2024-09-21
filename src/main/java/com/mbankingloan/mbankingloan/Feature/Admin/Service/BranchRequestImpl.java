@@ -70,10 +70,22 @@ public class BranchRequestImpl implements BranchRequest {
         if (!branchRepository.existsById(recoverBranch.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan ID not found");
         }
+        if (!branchRepository.existsByCode(recoverBranch.code())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Branch Code not found");
+        }
 
-        Branch branch = branchRepository.findById(recoverBranch.id()).orElseThrow();
+        Branch branch = branchRepository.findByIdAndCode(recoverBranch.id(), recoverBranch.code()).orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Name and Code of Branch do not match"));
         branch.setIsDeleted(false);
         return branchMapper.toBranchResponse(branch);
+    }
+
+    @Override
+    public ResponseBranch getBranchById(int id) {
+        if (!branchRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Branch not found");
+        }
+        return branchMapper.toBranchResponse(branchRepository.findById(id).orElseThrow());
+
     }
 
 

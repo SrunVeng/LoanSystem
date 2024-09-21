@@ -71,10 +71,22 @@ public class CollateralImpl implements CollateralRequest {
         if (!collateralTypeRepository.existsById(recoverCollateral.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "ID of CollatateralType do not exist");
         }
+        if (!collateralTypeRepository.existsByTitle(recoverCollateral.title())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Title of CollatateralType do not exist");
+        }
 
-        CollateralType collateralType = collateralTypeRepository.findById(recoverCollateral.id()).orElseThrow();
+        CollateralType collateralType = collateralTypeRepository.findByIdAndTitle(recoverCollateral.id(), recoverCollateral.title()).orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Title and ID of CollatateralType do not match"));
+
         collateralType.setIsDeleted(false);
 
         return collateralMapper.toCollateralTypeResponse(collateralType);
+    }
+
+    @Override
+    public ResponseCollateralType getCollateralTypeById(int id) {
+        if(!collateralTypeRepository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "CollatateralType do not exist");
+        }
+        return collateralMapper.toCollateralTypeResponse(collateralTypeRepository.findById(id).orElseThrow());
     }
 }

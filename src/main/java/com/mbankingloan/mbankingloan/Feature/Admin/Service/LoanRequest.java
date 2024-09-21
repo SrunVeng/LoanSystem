@@ -1,28 +1,34 @@
 package com.mbankingloan.mbankingloan.Feature.Admin.Service;
 
 
-import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.*;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoan;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoanType;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
 public interface LoanRequest {
 
-       ResponseLoanType createLoanType(CreateLoanType createLoanType);
+    ResponseLoanType createLoanType(CreateLoanType createLoanType);
 
-       ResponseLoan createLoan(CreateLoan createLoan);
+    ResponseLoan createLoan(CreateLoan createLoan);
 
-       List<ResponseLoan> getAllLoans();
+    List<ResponseLoan> getAllLoans();
 
-       List<ResponseLoanType> getAllLoanTypes();
+    List<ResponseLoanType> getAllLoanTypes();
 
-       ResponseLoan deleteLoanByid(DeleteLoan deleteLoan);
+    ResponseLoan deleteLoan(DeleteLoan deleteLoan);
 
-       ResponseLoanType deleteLoanTypeByid(DeleteLoan deleteLoan);
+    ResponseLoanType deleteLoanType(DeleteLoan deleteLoan);
 
-       ResponseLoan recoverLoanByid(@Valid RecoverLoan recoverLoan);
+    ResponseLoan recoverLoanById(int id);
 
-       ResponseLoanType recoverLoanTypeByid(@Valid RecoverLoanType recoverLoanType);
+    ResponseLoanType recoverLoanTypeById(int id);
+
+
+    ResponseLoan getLoanById(int id);
+
+    ResponseLoanType getLoanTypeById(int id);
 }

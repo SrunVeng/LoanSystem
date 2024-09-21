@@ -76,7 +76,7 @@ public class UserRequestImpl implements UserRequest {
 
     @Override
     @Transactional
-    public ResponseUser deleteUserByid(DeleteUser deleteUser) {
+    public ResponseUser deleteUser(DeleteUser deleteUser) {
 
         if (!userRepository.existsById(deleteUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
@@ -101,7 +101,7 @@ public class UserRequestImpl implements UserRequest {
 
     @Override
     @Transactional
-    public void permanentlyDeleteUserById(DeleteUser deleteUser) {
+    public void permanentlyDeleteUser(DeleteUser deleteUser) {
 
         if (!userRepository.existsById(deleteUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
@@ -120,7 +120,7 @@ public class UserRequestImpl implements UserRequest {
 
     @Override
     @Transactional
-    public ResponseUser updateUserByid(UpdateUser updateUser) {
+    public ResponseUser updateUser(UpdateUser updateUser) {
         if (!userRepository.existsById(updateUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
         }
@@ -149,7 +149,7 @@ public class UserRequestImpl implements UserRequest {
 
     @Override
     @Transactional
-    public ResponseUser recoverUserByid(RecoverUser recoverUser) {
+    public ResponseUser recoverUser(RecoverUser recoverUser) {
 
         if (!userRepository.existsById(recoverUser.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "UserID Not Found");
@@ -169,5 +169,14 @@ public class UserRequestImpl implements UserRequest {
 
         return userMapper.toUserResponse(userRepository.findById(recoverUser.id()).orElseThrow());
 
+    }
+
+    @Override
+    public ResponseUser getUserById(int id) {
+        if(!userRepository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User Not Found");
+        }
+
+        return userMapper.toUserResponse(userRepository.findById(id).orElseThrow());
     }
 }

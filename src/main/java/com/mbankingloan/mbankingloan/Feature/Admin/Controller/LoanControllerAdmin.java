@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/loan")
+@RequestMapping("/admin/api/v1/loan")
 public class  LoanControllerAdmin {
 
     private final LoanRequest loanRequest;
@@ -27,6 +27,20 @@ public class  LoanControllerAdmin {
     List<ResponseLoan> getAllLoans() {
         return loanRequest.getAllLoans();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getLoanById/{id}")
+    ResponseLoan getLoanById(@PathVariable int id) {
+        return loanRequest.getLoanById(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getLoanTypeById/{id}")
+    ResponseLoanType getLoanTypeById(@PathVariable int id) {
+        return loanRequest.getLoanTypeById(id);
+    }
+
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getAllLoanTypes")
     List<ResponseLoanType> getAllLoanTypes() {
@@ -46,28 +60,30 @@ public class  LoanControllerAdmin {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/deleteLoanById")
+    @PutMapping("/deleteLoan")
     ResponseLoan deleteLoanById(@Valid @RequestBody DeleteLoan deleteLoan) {
-        return loanRequest.deleteLoanByid(deleteLoan);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/recoverLoanById")
-    ResponseLoan recoverLoanById(@Valid @RequestBody RecoverLoan recoverLoan) {
-        return loanRequest.recoverLoanByid(recoverLoan);
+        return loanRequest.deleteLoan(deleteLoan);
     }
 
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/deleteLoanTypeById")
+    @PutMapping("/deleteLoanType")
     ResponseLoanType deleteLoanTypeById(@Valid @RequestBody DeleteLoan deleteLoan) {
-        return loanRequest.deleteLoanTypeByid(deleteLoan);
+        return loanRequest.deleteLoanType(deleteLoan);
     }
 
+
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/recoverLoanTypeById")
-    ResponseLoanType recoverLoanTypeById(@Valid @RequestBody RecoverLoanType recoverLoanType) {
-        return loanRequest.recoverLoanTypeByid(recoverLoanType);
+    @PutMapping("/recoverLoanById/{id}")
+    ResponseLoan recoverLoan(@PathVariable int id) {
+        return loanRequest.recoverLoanById(id);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/recoverLoanTypeById/{id}")
+    ResponseLoanType recoverLoanTypeById(@PathVariable int id) {
+        return loanRequest.recoverLoanTypeById(id);
     }
 
 

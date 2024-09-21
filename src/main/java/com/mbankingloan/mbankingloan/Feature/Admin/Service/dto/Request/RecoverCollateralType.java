@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 public record RecoverCollateralType(
 
         @NotNull(message = "ID is required")
-        Integer id
+        Integer id,
+        @NotBlank(message = "Title is required")
+        String title
 
 
 ) {

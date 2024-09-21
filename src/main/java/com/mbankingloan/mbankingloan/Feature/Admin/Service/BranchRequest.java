@@ -18,4 +18,6 @@ public interface BranchRequest {
     ResponseBranch deleteBranch(@Valid DeleteBranch deleteBranch);
 
     ResponseBranch recoverBranch(@Valid RecoverBranch recoverBranch);
+
+    ResponseBranch getBranchById(int id);
 }

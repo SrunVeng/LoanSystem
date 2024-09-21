@@ -7,7 +7,9 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Repository.CollateralTypeRepo
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanApplicationRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanTypeRepository;
-import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.*;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoan;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoanType;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
 import com.mbankingloan.mbankingloan.Mapper.LoanMapper;
@@ -91,7 +93,7 @@ public class LoanRequestImpl implements LoanRequest {
 
     @Override
     @Transactional
-    public ResponseLoan deleteLoanByid(DeleteLoan deleteLoan) {
+    public ResponseLoan deleteLoan(DeleteLoan deleteLoan) {
 
         if (loanApplicationRepository.existsByLoan_Id(deleteLoan.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan is Under LoanApplication Cannot be Deleted");
@@ -115,7 +117,7 @@ public class LoanRequestImpl implements LoanRequest {
 
     @Override
     @Transactional
-    public ResponseLoanType deleteLoanTypeByid(DeleteLoan deleteLoan) {
+    public ResponseLoanType deleteLoanType(DeleteLoan deleteLoan) {
 
         if (!loanTypeRepository.existsById(deleteLoan.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "LoanType ID Does not exists");
@@ -136,9 +138,9 @@ public class LoanRequestImpl implements LoanRequest {
 
     @Override
     @Transactional
-    public ResponseLoan recoverLoanByid(RecoverLoan recoverLoan) {
+    public ResponseLoan recoverLoanById(int id) {
 
-        Loan loan = loanRepository.findById(recoverLoan.id()).orElseThrow();
+        Loan loan = loanRepository.findById(id).orElseThrow();
         loan.setIsDeleted(false);
 
         return loanMapper.toLoanResponse(loan);
@@ -146,12 +148,32 @@ public class LoanRequestImpl implements LoanRequest {
 
     @Override
     @Transactional
-    public ResponseLoanType recoverLoanTypeByid(RecoverLoanType recoverLoanType) {
+    public ResponseLoanType recoverLoanTypeById(int id) {
 
-        LoanType loanType = loanTypeRepository.findById(recoverLoanType.id()).orElseThrow();
+        LoanType loanType = loanTypeRepository.findById(id).orElseThrow();
         loanType.setIsDeleted(false);
 
         return loanMapper.toResponseLoanType(loanType);
+    }
+
+
+    @Override
+    public ResponseLoan getLoanById(int id) {
+
+        if(!loanRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found");
+        }
+
+        return loanMapper.toLoanResponse(loanRepository.findById(id).orElseThrow());
+    }
+
+    @Override
+    public ResponseLoanType getLoanTypeById(int id) {
+        if(!loanTypeRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "LoanType not found");
+        }
+
+        return loanMapper.toResponseLoanType(loanTypeRepository.findById(id).orElseThrow());
     }
 
 
