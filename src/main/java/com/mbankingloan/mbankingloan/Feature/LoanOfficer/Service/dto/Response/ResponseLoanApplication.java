@@ -6,10 +6,12 @@ import java.time.LocalDate;
 
 public record ResponseLoanApplication(
         Integer id,
-        BigDecimal amount,
+        BigDecimal requestAmount,
+        BigDecimal maxLoanableAmount,
         Integer tenure,
         BigDecimal interestRate,
         LocalDate maturityDate,
+        LocalDate createdAt,
         BigDecimal monthlyInstallment,
         BigDecimal moa,
         BigDecimal downPayment,

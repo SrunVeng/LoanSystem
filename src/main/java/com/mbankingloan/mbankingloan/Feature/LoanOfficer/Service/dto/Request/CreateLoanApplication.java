@@ -8,7 +8,7 @@ import java.util.List;
 public record CreateLoanApplication(
         @NotNull(message = "LoanType ID is Require")
         Integer loanTypeId,
-        BigDecimal amount,
+        BigDecimal requestAmount,
         @NotNull(message = "Tenure ID is Require")
         Integer tenure,
         @NotNull(message = "InterestRate is Require")
@@ -16,7 +16,9 @@ public record CreateLoanApplication(
         @NotNull(message = "CustomerCiF is Require")
         List<String> customerCifNumber,
         @NotNull(message = "CollateralID is Require")
-        List<Integer> collateralID
+        List<Integer> collateralID,
+        @NotNull(message = "TotalCollateralValue is Require")
+        BigDecimal totalCollateralValue
 
 
 ) {

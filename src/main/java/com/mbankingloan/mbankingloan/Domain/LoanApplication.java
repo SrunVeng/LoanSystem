@@ -37,13 +37,17 @@ public class LoanApplication {
     @OneToMany
     private List<Customer> customer;
 
-    private BigDecimal amount;
+    private BigDecimal requestAmount;
 
     private Integer tenure;
 
     //system generate by ID input
     @ManyToMany
     private List<CollateralType> collateralTypes;
+
+    private BigDecimal totalCollateralValue;
+
+    private BigDecimal maxLoanableAmount;
 
     private BigDecimal interestRate;
 
@@ -56,13 +60,17 @@ public class LoanApplication {
     //system generate
     private BigDecimal downPayment;
 
-
+    private LocalDate createdAt;
 
     private Boolean isApprovedByBranchManager;
     private Boolean isApprovedByHeadOfLoan;
 
     //LoanCanDrawDown can set to true if isApprovedBoth is True
     private Boolean isDrawDown;
+
+
+    private Boolean isRejectedByBM;
+    private Boolean isRejectedByHeadOfLoan;
 
 
 

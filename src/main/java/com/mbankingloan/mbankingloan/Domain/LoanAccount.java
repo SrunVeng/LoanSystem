@@ -35,7 +35,6 @@ public class LoanAccount {
     private LoanApplication LoanApplication;
 
 
-    private String alias;
 
     // balance will set to LoanAmount of loanApplication if isDrawdown is true
     private BigDecimal balance;

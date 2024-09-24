@@ -44,7 +44,7 @@ public class MoaUtil {
 
         return switch (createLoanApplication.loanTypeId()) {
             case 1, 2 -> BigDecimal.ZERO;
-            case 3 -> createLoanApplication.amount().multiply(BigDecimal.valueOf(0.3));
+            case 3 -> createLoanApplication.requestAmount().multiply(BigDecimal.valueOf(0.3));
             default ->
                 // Optionally, set a default down payment or handle unexpected loan types
                     BigDecimal.ZERO; // or any other default value you prefer

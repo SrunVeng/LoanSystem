@@ -20,7 +20,7 @@ public class CalculateEMI {
                 .divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_EVEN); // Convert annual rate to monthly rate
 
         // Calculate the principal amount after down payment
-        BigDecimal principalAmount = createLoanApplication.amount().subtract(loanApplication.getDownPayment());
+        BigDecimal principalAmount = createLoanApplication.requestAmount().subtract(loanApplication.getDownPayment());
 
         // EMI formula: [P * r * (1 + r)^n] / [(1 + r)^n - 1]
         BigDecimal onePlusRPowerN = BigDecimal.ONE.add(monthlyInterestRate).pow(createLoanApplication.tenure());

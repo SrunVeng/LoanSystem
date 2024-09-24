@@ -4,10 +4,8 @@ package com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto;
 import com.mbankingloan.mbankingloan.Domain.CollateralType;
 import com.mbankingloan.mbankingloan.Domain.Customer;
 import com.mbankingloan.mbankingloan.Domain.LoanApplication;
-import com.mbankingloan.mbankingloan.Domain.LoanType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.CollateralTypeRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanApplicationRepository;
-import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanTypeRepository;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.CustomerRepository;
 import com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto.Request.CreateLoanApplication;
@@ -67,6 +65,9 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
     @Value("${collateralType-id.range.max}")
     private Integer maxCollateralTypeId;
 
+    @Value("${loan-bm-approve-limit}")
+    private BigDecimal branchManagerApprovalLimit;
+
 
     @Override
     public ResponseLoanApplication createLoanApplication(CreateLoanApplication createLoanApplication) {
@@ -95,7 +96,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You cannot select more than " + maxCollateralTypeId + " collateral typesID.");
         }
 
-        if (createLoanApplication.amount().compareTo(minLoanValue) < 0 || createLoanApplication.amount().compareTo(maxLoanValue) > 0) {
+        if (createLoanApplication.requestAmount().compareTo(minLoanValue) < 0 || createLoanApplication.requestAmount().compareTo(maxLoanValue) > 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan Amount is between 20000 and 10000000");
         }
 
@@ -126,16 +127,24 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 
 
         // End Validation
-
         LoanApplication loanApplication = loanApplicationMapper.fromCreateLoanApplicationRequest(createLoanApplication);
         loanApplication.setMaturityDate(LocalDate.now().plusMonths(loanApplication.getTenure()));
         loanApplication.setCollateralTypes(collateralTypes);
         loanApplication.setMoa(moaUtil.setMoaBasedOnCollateralTypes(createLoanApplication));
+        loanApplication.setMaxLoanableAmount(createLoanApplication.totalCollateralValue().multiply(loanApplication.getMoa()));
         loanApplication.setDownPayment(moaUtil.setDownPaymentBasedOnLoanType(createLoanApplication));
-        loanApplication.setMonthlyInstallment(calculateEMI.CalculateEMI(createLoanApplication,loanApplication));
-        loanApplication.setIsApprovedByHeadOfLoan(false);
+        loanApplication.setCreatedAt(LocalDate.now());
+        loanApplication.setMonthlyInstallment(calculateEMI.CalculateEMI(createLoanApplication, loanApplication));
         loanApplication.setLoanType(loanTypeRepository.findById(createLoanApplication.loanTypeId()).orElseThrow());
-        loanApplication.setIsApprovedByBranchManager(false);
+        if (loanApplication.getRequestAmount().compareTo(branchManagerApprovalLimit) <= 0) {
+            loanApplication.setIsApprovedByBranchManager(false);
+            loanApplication.setIsApprovedByHeadOfLoan(true);
+        } else {
+            loanApplication.setIsApprovedByBranchManager(false);
+            loanApplication.setIsApprovedByHeadOfLoan(false);
+        }
+        loanApplication.setIsRejectedByHeadOfLoan(false);
+        loanApplication.setIsRejectedByBM(false);
         loanApplication.setIsDrawDown(false);
         loanApplicationRepository.save(loanApplication);
         return loanApplicationMapper.toResponseLoanApplication(loanApplication);

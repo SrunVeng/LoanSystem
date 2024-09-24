@@ -1,11 +1,10 @@
 package com.mbankingloan.mbankingloan.Exception;
 
 
-
-import org.springframework.http.HttpStatus;
-
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.ConstraintViolationException;
 import org.postgresql.util.PSQLException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,44 +28,36 @@ public class ApiException {
             errorDetail.put("RejectedValue", Objects.requireNonNull(fieldError.getRejectedValue()).toString());
             ErrorDetailResponse.add(errorDetail);
         });
-        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder()
-                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .title(e.getTitleMessageCode())
-                .details(ErrorDetailResponse)
-                .build();
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .error(errorDetailsResponse)
-                .build(), e.getStatusCode());
+        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder().code(HttpStatus.BAD_REQUEST.getReasonPhrase()).title(e.getTitleMessageCode()).details(ErrorDetailResponse).build();
+        return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), e.getStatusCode());
     }
 
 
     @ExceptionHandler(ResponseStatusException.class)
     ResponseEntity<?> handleMethodRuntimeException(ResponseStatusException e) {
 
-        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder()
-                .code(e.getTitleMessageCode())
-                .title(e.getMessage())
-                .details(e.getDetailMessageCode())
-                .build();
+        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder().code(e.getTitleMessageCode()).title(e.getMessage()).details(e.getDetailMessageCode()).build();
 
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .error(errorDetailsResponse)
-                .build(), e.getStatusCode());
+        return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), e.getStatusCode());
     }
 
     @ExceptionHandler(PSQLException.class)
     ResponseEntity<?> handlePSQLException(PSQLException e) {
 
-        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder()
-                .code("DB_ERROR")  // You can customize this error code
-                .title("Database Error")
-                .details(e.getMessage())  // Using the PSQLException message
-                .build();
+        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder().code("DB_ERROR").title("Database Error").details(e.getMessage()).build();
 
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .error(errorDetailsResponse)
-                .build(), HttpStatus.INTERNAL_SERVER_ERROR);  // You can customize the HTTP status
+        return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    ResponseEntity<?> ConstraintViolationException(ConstraintViolationException e) {
+        ErrorDetailsResponse<?> errorDetailsResponse =
+                ErrorDetailsResponse.builder()
+                        .code("ConstraintViolation Erro")
+                        .title("Validation Error")
+                        .details(e.getMessage()).build();
+
+        return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
