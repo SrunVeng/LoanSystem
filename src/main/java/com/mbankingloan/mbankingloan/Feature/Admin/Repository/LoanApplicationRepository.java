@@ -2,6 +2,7 @@ package com.mbankingloan.mbankingloan.Feature.Admin.Repository;
 
 import com.mbankingloan.mbankingloan.Domain.Loan;
 import com.mbankingloan.mbankingloan.Domain.LoanApplication;
+import com.mbankingloan.mbankingloan.Domain.LoanType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,9 @@ public interface LoanApplicationRepository extends JpaRepository<LoanApplication
 
 
     boolean existsByLoan_Id(Integer loanId);
+
+
+
 
 
 

@@ -5,6 +5,7 @@ import com.mbankingloan.mbankingloan.Domain.*;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,15 @@ public class DataInit {
     private final UserRepository userRepository;
     private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
+    private final AccountTypeRepository accountTypeRepository;
     private final PasswordEncoder passwordEncoder;
+
+
+    @Value("${loan.min-value}")
+    private BigDecimal minLoanValue;
+
+    @Value("${loan.max-value}")
+    private BigDecimal maxLoanValue;
 
     @PostConstruct
     void init() {
@@ -34,7 +43,7 @@ public class DataInit {
         RoleInit();
         BranchInit();
         UserInit();
-
+        LoanAccountTypeInit();
     }
 
     private void LoanTypeInit() {
@@ -42,16 +51,19 @@ public class DataInit {
         LoanType loanType1 = LoanType.builder()
                 .name("TermLoan")
                 .isDeleted(false)
+                .tenure(120)
                 .build();
 
         LoanType loanType2 = LoanType.builder()
                 .name("OverDaft")
                 .isDeleted(false)
+                .tenure(120)
                 .build();
 
         LoanType loanType3 = LoanType.builder()
                 .name("HomeLoan")
                 .isDeleted(false)
+                .tenure(180)
                 .build();
         loanTypeRepository.saveAll(List.of(loanType1, loanType2, loanType3));
     }
@@ -73,12 +85,7 @@ public class DataInit {
                 .moa(BigDecimal.valueOf(1.0))
                 .isDeleted(false)
                 .build();
-        CollateralType collateralType4 = CollateralType.builder()
-                .title("Income-Statement")
-                .moa(BigDecimal.valueOf(1.0))
-                .isDeleted(false)
-                .build();
-        collateralTypeRepository.saveAll(List.of(collateralType1, collateralType2, collateralType3, collateralType4));
+        collateralTypeRepository.saveAll(List.of(collateralType1, collateralType2, collateralType3));
 
     }
 
@@ -86,81 +93,87 @@ public class DataInit {
     private void LoanProductInit() {
 
 
-        LoanType termLoan = loanTypeRepository.findById(1).orElseThrow();
+            LoanType termLoan = loanTypeRepository.findById(1).orElseThrow();
+            LoanType homeLoan = loanTypeRepository.findById(3).orElseThrow();
 
 
-        List<CollateralType> allCollateralTypes = collateralTypeRepository.findAll();
+            List<CollateralType> allCollateralTypes = collateralTypeRepository.findAll();
 
-        List<CollateralType> hardSoftFixedCollateralTypes = new ArrayList<>();
-        hardSoftFixedCollateralTypes.add(collateralTypeRepository.findById(2).orElseThrow());
-        hardSoftFixedCollateralTypes.add(collateralTypeRepository.findById(3).orElseThrow());
+            List<CollateralType> hardSoftFixedCollateralTypes = new ArrayList<>();
+            hardSoftFixedCollateralTypes.add(collateralTypeRepository.findById(2).orElseThrow());
+            hardSoftFixedCollateralTypes.add(collateralTypeRepository.findById(3).orElseThrow());
 
-        List<CollateralType> hardFixedCollateralTypes = new ArrayList<>();
-        hardFixedCollateralTypes.add(collateralTypeRepository.findById(1).orElseThrow());
-        hardFixedCollateralTypes.add(collateralTypeRepository.findById(3).orElseThrow());
+            List<CollateralType> hardFixedCollateralTypes = new ArrayList<>();
+            hardFixedCollateralTypes.add(collateralTypeRepository.findById(1).orElseThrow());
+            hardFixedCollateralTypes.add(collateralTypeRepository.findById(3).orElseThrow());
 
 
-        Loan personalLoan = Loan.builder()
-                .name("PersonalLoan")
-                .amountLimit(BigDecimal.valueOf(20000))
-                .interestRate(BigDecimal.valueOf(18.00))
-                .loantype(termLoan)
-                .tenure(120)
-                .isDeleted(false)
-                .collateralTypes(allCollateralTypes)
-                .build();
 
-        Loan microBusinessLoan = Loan.builder()
-                .name("Micro-BusinessLoan")
-                .amountLimit(BigDecimal.valueOf(50000))
-                .interestRate(BigDecimal.valueOf(17.50))
-                .loantype(termLoan)
-                .tenure(120)
-                .isDeleted(false)
-                .collateralTypes(hardSoftFixedCollateralTypes)
-                .build();
 
-        Loan smallBusinessLoan = Loan.builder()
-                .name("Small-BusinessLoan")
-                .amountLimit(BigDecimal.valueOf(100000))
-                .interestRate(BigDecimal.valueOf(15.85))
-                .loantype(termLoan)
-                .tenure(120)
-                .isDeleted(false)
-                .collateralTypes(hardFixedCollateralTypes)
-                .build();
+            Loan personalLoan = Loan.builder()
+                    .name("PersonalLoan")
+                    .amountLimit(minLoanValue)
+                    .interestRate(BigDecimal.valueOf(18.00))
+                    .loantype(termLoan)
+                    .isDeleted(false)
+                    .collateralTypes(allCollateralTypes)
+                    .build();
 
-        Loan mediumBusinessLoan = Loan.builder()
-                .name("Medium-BusinessLoan")
-                .amountLimit(BigDecimal.valueOf(500000))
-                .interestRate(BigDecimal.valueOf(13.85))
-                .loantype(termLoan)
-                .tenure(120)
-                .isDeleted(false)
-                .collateralTypes(hardFixedCollateralTypes)
-                .build();
+            Loan microBusinessLoan = Loan.builder()
+                    .name("Micro-BusinessLoan")
+                    .amountLimit(BigDecimal.valueOf(50000))
+                    .interestRate(BigDecimal.valueOf(17.50))
+                    .loantype(termLoan)
+                    .isDeleted(false)
+                    .collateralTypes(hardSoftFixedCollateralTypes)
+                    .build();
 
-        Loan largeBusinessLoan = Loan.builder()
-                .name("Large-BusinessLoan")
-                .amountLimit(BigDecimal.valueOf(2000000))
-                .interestRate(BigDecimal.valueOf(13.85))
-                .loantype(termLoan)
-                .tenure(120)
-                .isDeleted(false)
-                .collateralTypes(hardFixedCollateralTypes)
-                .build();
+            Loan smallBusinessLoan = Loan.builder()
+                    .name("Small-BusinessLoan")
+                    .amountLimit(BigDecimal.valueOf(100000))
+                    .interestRate(BigDecimal.valueOf(15.85))
+                    .loantype(termLoan)
+                    .isDeleted(false)
+                    .collateralTypes(hardFixedCollateralTypes)
+                    .build();
 
-        Loan commercialBusinessLoan = Loan.builder()
-                .name("Commercial-BusinessLoan")
-                .amountLimit(BigDecimal.valueOf(10000000))
-                .interestRate(BigDecimal.valueOf(13.85))
-                .loantype(termLoan)
-                .tenure(120)
-                .isDeleted(false)
-                .collateralTypes(hardFixedCollateralTypes)
-                .build();
+            Loan mediumBusinessLoan = Loan.builder()
+                    .name("Medium-BusinessLoan")
+                    .amountLimit(BigDecimal.valueOf(500000))
+                    .interestRate(BigDecimal.valueOf(13.85))
+                    .loantype(termLoan)
+                    .isDeleted(false)
+                    .collateralTypes(hardFixedCollateralTypes)
+                    .build();
 
-        loanRepository.saveAll(List.of(personalLoan, microBusinessLoan, smallBusinessLoan,mediumBusinessLoan,largeBusinessLoan,commercialBusinessLoan));
+            Loan largeBusinessLoan = Loan.builder()
+                    .name("Large-BusinessLoan")
+                    .amountLimit(BigDecimal.valueOf(2000000))
+                    .interestRate(BigDecimal.valueOf(13.85))
+                    .loantype(termLoan)
+                    .isDeleted(false)
+                    .collateralTypes(hardFixedCollateralTypes)
+                    .build();
+
+            Loan commercialBusinessLoan = Loan.builder()
+                    .name("Commercial-BusinessLoan")
+                    .amountLimit(maxLoanValue)
+                    .interestRate(BigDecimal.valueOf(9.5))
+                    .loantype(termLoan)
+                    .isDeleted(false)
+                    .collateralTypes(hardFixedCollateralTypes)
+                    .build();
+
+            Loan HomePurchase = Loan.builder()
+                    .name("Home-Purchase")
+                    .amountLimit(maxLoanValue)
+                    .interestRate(BigDecimal.valueOf(8.5))
+                    .loantype(homeLoan)
+                    .isDeleted(false)
+                    .collateralTypes(hardFixedCollateralTypes)
+                    .build();
+
+            loanRepository.saveAll(List.of(HomePurchase,personalLoan, microBusinessLoan, smallBusinessLoan,mediumBusinessLoan,largeBusinessLoan,commercialBusinessLoan));
 
     }
 
@@ -263,6 +276,24 @@ public class DataInit {
                 .roles(roles)
                 .build();
         userRepository.saveAll(List.of(admin));
+    }
+
+    private void LoanAccountTypeInit(){
+
+        LoanAccountType loanAccountType1 = LoanAccountType.builder()
+                .name("Term-Loan_Account")
+                .isDeleted(false)
+                .build();
+        LoanAccountType loanAccountType2 = LoanAccountType.builder()
+                .name("OverDaft_Loan_Account")
+                .isDeleted(false)
+                .build();
+        LoanAccountType loanAccountType3 = LoanAccountType.builder()
+                .name("Home-Loan_Account")
+                .isDeleted(false)
+                .build();
+
+        accountTypeRepository.saveAll(List.of(loanAccountType1, loanAccountType2, loanAccountType3));
     }
 
 }

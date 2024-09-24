@@ -5,6 +5,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoa
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoanType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoan;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanAccountType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
 
 import java.util.List;
@@ -31,4 +32,7 @@ public interface LoanRequest {
     ResponseLoan getLoanById(int id);
 
     ResponseLoanType getLoanTypeById(int id);
+
+    List<ResponseLoanAccountType> getAllLoanAccountTypes();
+
 }

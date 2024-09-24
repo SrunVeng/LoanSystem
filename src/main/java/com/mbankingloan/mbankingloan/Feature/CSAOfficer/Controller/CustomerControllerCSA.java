@@ -8,6 +8,7 @@ import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.Res
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseCustomerDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class CustomerControllerCSA {
         return customerService.createCustomer(createCustomerCiF);
 
     }
+
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/update")
     ResponseCustomerDetails updateCustomer(@Valid @RequestBody UpdateCustomer updateCustomer) {
@@ -69,6 +71,14 @@ public class CustomerControllerCSA {
     List<ResponseCustomerDetails> getAllCustomer() {
         return customerService.getAllCustomer();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getAllCustomerPagination")
+    Page<ResponseCustomerDetails> getAllCustomerPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return customerService.getCustomersPagination(page, size);
+    }
+
+
 
 
 }

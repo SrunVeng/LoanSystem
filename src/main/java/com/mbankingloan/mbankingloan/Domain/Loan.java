@@ -27,7 +27,7 @@ public class Loan {
     @ManyToMany
     private List<CollateralType> collateralTypes;
 
-    private Integer tenure;
+
 
     private BigDecimal interestRate;
 
@@ -36,6 +36,8 @@ public class Loan {
     private LoanType loantype;
 
     private Boolean isDeleted;
+
+
 
 
 }

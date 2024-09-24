@@ -10,6 +10,8 @@ import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.Res
 import com.mbankingloan.mbankingloan.Mapper.CustomerMapper;
 import com.mbankingloan.mbankingloan.Util.GenerateCustomerCIFNumber;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,6 +122,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setIsDeleted(false);
         customerRepository.save(customer);
         return customerMapper.toResponseCustomerDetails(customer);
+    }
+
+    @Override
+    public Page<ResponseCustomerDetails> getCustomersPagination(int page, int size) {
+        return customerMapper.toResponseCustomerDetailsPage(customerRepository.findAll(PageRequest.of(page, size)));
     }
 
 }

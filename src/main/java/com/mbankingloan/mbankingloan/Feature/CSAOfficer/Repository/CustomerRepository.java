@@ -2,6 +2,9 @@ package com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository;
 
 
 import com.mbankingloan.mbankingloan.Domain.Customer;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,10 +17,18 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
         boolean existsByphoneNumber(String phoneNumber);
 
+        List<Customer> findAllBycustomerCIFNumber(String customerCIFNumber);
+
         Customer findByphoneNumber(String phoneNumber);
 
         Customer findByCustomerCIFNumber(String customerCIFNumber);
 
         List<Customer> findByLastName(String lastName);
 
+        Page<Customer> findAll(Pageable pageable);
+
+        List<Customer> findAllByCustomerCIFNumberIn(List<String> customerCifNumbers);
+
+
+        Boolean existsAllByCustomerCIFNumberIn(List<String> customerCifNumbers);
 }

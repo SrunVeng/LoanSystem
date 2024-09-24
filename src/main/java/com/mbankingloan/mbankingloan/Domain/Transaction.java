@@ -21,16 +21,16 @@ public class Transaction {
     private BigDecimal amount;
 
     @ManyToOne
-    private Account ownerId;
+    private LoanAccount ownerId;
 
     private LocalDateTime transactionAt;
 
     @JoinColumn
     @ManyToOne
-    private Account transferReceiverId;
+    private LoanAccount transferReceiverId;
 
     @ManyToOne
-    private Account receiverId;
+    private LoanAccount receiverId;
     @Column(nullable = false, length = 30)
     private String transactionType;
 

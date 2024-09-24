@@ -6,6 +6,7 @@ import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request.Upda
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseCustomer;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseCustomerDetails;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -27,4 +28,7 @@ public interface CustomerService {
     ResponseCustomerDetails deleteCustomerByCif(String cif);
 
     ResponseCustomerDetails recoverCustomerByCif(String cif);
+
+
+    Page<ResponseCustomerDetails> getCustomersPagination(int page, int size);
 }

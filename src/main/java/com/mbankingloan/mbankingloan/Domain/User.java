@@ -36,6 +36,9 @@ public class User {
     @ManyToOne(optional = false)
     private Branch branchCode;
 
+    @ManyToMany
+    List<Customer> customers;
+
     @Column(nullable = false)
     private LocalDate birthDate;
     @Column(nullable = false)

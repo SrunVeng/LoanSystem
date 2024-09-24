@@ -5,6 +5,7 @@ package com.mbankingloan.mbankingloan.Exception;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.postgresql.util.PSQLException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -52,5 +53,20 @@ public class ApiException {
                 .error(errorDetailsResponse)
                 .build(), e.getStatusCode());
     }
+
+    @ExceptionHandler(PSQLException.class)
+    ResponseEntity<?> handlePSQLException(PSQLException e) {
+
+        ErrorDetailsResponse<?> errorDetailsResponse = ErrorDetailsResponse.builder()
+                .code("DB_ERROR")  // You can customize this error code
+                .title("Database Error")
+                .details(e.getMessage())  // Using the PSQLException message
+                .build();
+
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .error(errorDetailsResponse)
+                .build(), HttpStatus.INTERNAL_SERVER_ERROR);  // You can customize the HTTP status
+    }
+
 
 }

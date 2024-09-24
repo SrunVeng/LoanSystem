@@ -6,6 +6,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.LoanRequest;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.*;
 
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoan;
+import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanAccountType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
 
 import jakarta.validation.Valid;
@@ -47,6 +48,13 @@ public class  LoanControllerAdmin {
         return loanRequest.getAllLoanTypes();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getAllLoanAccountTypes")
+    List<ResponseLoanAccountType> getAllLoanAccountTypes() {
+        return loanRequest.getAllLoanAccountTypes();
+    }
+
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/createLoanType")
     ResponseLoanType createLoanType(@Valid @RequestBody CreateLoanType createLoanType) {
@@ -64,7 +72,6 @@ public class  LoanControllerAdmin {
     ResponseLoan deleteLoanById(@Valid @RequestBody DeleteLoan deleteLoan) {
         return loanRequest.deleteLoan(deleteLoan);
     }
-
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/deleteLoanType")

@@ -1,5 +1,6 @@
 package com.mbankingloan.mbankingloan.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -21,6 +22,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String customerCIFNumber;
 
     @Column(nullable = false)
@@ -68,14 +70,14 @@ public class Customer {
     private Boolean isCredentialsNonExpired;
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "customer")
-    private List<CustomerAccount> customerAccount;
+
 
     @OneToOne
+    @JsonIgnore
     private Branch branchCode;
 
-    @OneToOne
-    private User use;
+    @ManyToMany
+    private List<User> use;
 
 
 }

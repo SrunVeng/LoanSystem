@@ -17,4 +17,5 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
     Boolean existsByName(String name);
 
 
+
 }

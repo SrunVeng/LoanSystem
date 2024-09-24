@@ -21,6 +21,8 @@ public class LoanType {
 
     private String name;
 
+    private Integer tenure;
+
     private Boolean isDeleted;
 
 //    @OneToMany(mappedBy = "loantype")
