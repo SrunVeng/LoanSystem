@@ -1,6 +1,7 @@
 package com.mbankingloan.mbankingloan.Feature.Admin.Service;
 
 import com.mbankingloan.mbankingloan.Domain.Branch;
+import com.mbankingloan.mbankingloan.Domain.EmailVerification;
 import com.mbankingloan.mbankingloan.Domain.Role;
 import com.mbankingloan.mbankingloan.Domain.User;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.BranchRepository;
@@ -11,16 +12,26 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverUs
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RegisterUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.UpdateUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseUser;
+import com.mbankingloan.mbankingloan.Feature.Auth.Repository.EmailRepository;
 import com.mbankingloan.mbankingloan.Mapper.UserMapper;
 import com.mbankingloan.mbankingloan.Util.GenerateStaffID;
+import com.mbankingloan.mbankingloan.Util.GenerateVerificationCode;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,11 +43,17 @@ public class UserRequestImpl implements UserRequest {
     private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
     private final GenerateStaffID generateStaffID;
+    private final GenerateVerificationCode generateVerificationCode;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
+    private final EmailRepository emailRepository;
+    @Value("${spring.mail.username}")
+    private String adminMail;
 
 
     @Override
-    public ResponseUser registerUser(RegisterUser registerUser) {
+    @Transactional
+    public ResponseUser registerUser(RegisterUser registerUser) throws MessagingException {
 
         // Validate Email and Phone Number is Duplicate
         if (userRepository.existsByEmail(registerUser.email())) {
@@ -47,11 +64,13 @@ public class UserRequestImpl implements UserRequest {
         }
 
 
-        List<Role> roles = roleRepository.findAllById(registerUser.rolesId());
-        if (roles.size() != registerUser.rolesId().size()) {
+        List<Role> checkRoles = roleRepository.findAllById(registerUser.rolesId());
+        if (checkRoles.size() != registerUser.rolesId().size()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Roles do not exists");
         }
 
+        List<Role> roles = new ArrayList<>();
+        roles.addAll(checkRoles);
         User newUser = userMapper.fromUserRegister(registerUser);
         Branch branch = branchRepository.findById(registerUser.branchCodeId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Branch Not Found"));
         newUser.setRoles(roles);
@@ -60,12 +79,35 @@ public class UserRequestImpl implements UserRequest {
         newUser.setIsVerified(false);
         newUser.setIsBlock(true);
         newUser.setIsDeleted(false);
+        newUser.setRoles(roles);
         newUser.setIsAccountNonLocked(true);
         newUser.setIsCredentialsNonExpired(true);
         newUser.setIsAccountNonExpired(true);
         newUser.setStaffId(generateStaffID.generateStaffId());
         newUser.setPassword(passwordEncoder.encode("Mbanking@#123"));
         userRepository.save(newUser);
+
+        //1.Prepare Email Code In Repo Email
+        EmailVerification emailVerification = new EmailVerification();
+        emailVerification.setUser(newUser);
+        emailVerification.setVerificationCode(generateVerificationCode.generateSecureCode());
+        emailVerification.setExpiryTime(LocalTime.now().plusHours(12));
+        emailRepository.save(emailVerification);
+        //
+        //2.Send Mail
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        helper.setTo(newUser.getEmail());
+        helper.setFrom(adminMail);
+        helper.setText(emailVerification.getVerificationCode());
+        mailSender.send(mimeMessage);
+
+
+
+
+
+
+
         return userMapper.toUserResponse(newUser);
     }
 

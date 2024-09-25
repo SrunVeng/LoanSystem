@@ -85,6 +85,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
         //End Declare
         //Validation
 
+
         if (anyNonExistent) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "One or more Customer CIF numbers do not exist.");
         }

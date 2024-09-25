@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CustomerControllerCSA {
     private final CustomerService customerService;
 
 
+    @PreAuthorize("hasRole('CSA-OFFICER')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     ResponseCustomer createCustomer(@Valid @RequestBody CreateCustomerCiF createCustomerCiF) {

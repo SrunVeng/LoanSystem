@@ -6,6 +6,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverUs
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RegisterUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.UpdateUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseUser;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public interface UserRequest {
 
-       ResponseUser registerUser(RegisterUser registerUser);
+       ResponseUser registerUser(RegisterUser registerUser) throws MessagingException;
 
        List<ResponseUser> getAllUsers();
 

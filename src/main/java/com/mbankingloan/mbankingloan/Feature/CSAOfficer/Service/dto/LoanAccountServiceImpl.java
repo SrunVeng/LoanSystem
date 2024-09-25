@@ -74,6 +74,7 @@ public class LoanAccountServiceImpl implements LoanAccountService {
         loanAccount.setLoanAccountType(loanAccountType);
         loanAccount.setIsActive(false);
         loanAccount.setIsDeleted(false);
+        loanAccount.setIsNewSecuritySet(false);
         loanAccount.setPassword(passwordEncoder.encode("123456"));
         loanAccount.setPin(passwordEncoder.encode("1234"));
         loanAccountRepository.save(loanAccount);
@@ -143,6 +144,10 @@ public class LoanAccountServiceImpl implements LoanAccountService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan Application is already Draw Down");
         }
         // Can DrawDown if password is reset out of 123456 and pin out of 1234 ( validate later when have customer feature )
+        if(!loanAccount.getIsNewSecuritySet()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please Customer set new Pin and Password");
+
+        }
 
         // home loan draw Only70%
         if (loanApplication.getLoanType().getId().equals(3)) {

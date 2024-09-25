@@ -7,9 +7,12 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RecoverUs
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RegisterUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.UpdateUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseUser;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +37,10 @@ public class UserControllerAdmin {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
-    ResponseUser registerUser(@Valid @RequestBody RegisterUser registerUser) {
+    ResponseUser registerUser(@Valid @RequestBody RegisterUser registerUser) throws MessagingException {
         return userRequest.registerUser(registerUser);
     }
 

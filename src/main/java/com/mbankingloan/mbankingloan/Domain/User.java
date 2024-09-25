@@ -1,6 +1,7 @@
 package com.mbankingloan.mbankingloan.Domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -58,6 +59,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     @Column(nullable = false)
+    @JsonIgnore
     private List<Role> roles;
 
 

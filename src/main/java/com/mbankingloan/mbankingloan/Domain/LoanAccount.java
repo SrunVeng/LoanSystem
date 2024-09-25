@@ -34,6 +34,7 @@ public class LoanAccount {
     @OneToOne(cascade = CascadeType.ALL)
     private LoanApplication LoanApplication;
 
+    private String phoneNumber;
 
 
     // balance will set to LoanAmount of loanApplication if isDrawdown is true
@@ -44,6 +45,9 @@ public class LoanAccount {
 
     // isDeleted canSet to false is OutstandingBalance in LoanApplication is 0
     private Boolean isDeleted;
+
+
+    private Boolean isNewSecuritySet;
 
 
     @ManyToOne

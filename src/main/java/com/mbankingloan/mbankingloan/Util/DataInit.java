@@ -226,24 +226,18 @@ public class DataInit {
                 .name("ADMIN")
                 .build();
         Role role2 = Role.builder()
-                .name("TOP-MANAGEMENT")
-                .build();
-        Role role3 = Role.builder()
-                .name("MANAGEMENT")
-                .build();
-        Role role4 = Role.builder()
                 .name("MANAGER")
                 .build();
-        Role role5 = Role.builder()
+        Role role3 = Role.builder()
                 .name("LOAN-OFFICER")
                 .build();
-        Role role6 = Role.builder()
+        Role role4 = Role.builder()
                 .name("CSA-OFFICER")
                 .build();
-        Role role7 = Role.builder()
+        Role role5 = Role.builder()
                 .name("CUSTOMER")
                 .build();
-        roleRepository.saveAll(List.of(role1,role2,role3,role4,role5,role6,role7));
+        roleRepository.saveAll(List.of(role1,role2,role3,role4,role5));
 
     }
 

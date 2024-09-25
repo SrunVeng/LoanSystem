@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByStaffId(String staffId);
     // validateEmail
     boolean existsByEmail(String email);
+
+    User findByEmail(String email);
     // validatePhoneNumber
     boolean existsByPhoneNumber(String phoneNumber);
 
@@ -23,5 +25,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByIdAndFirstNameAndLastName(Integer id, String firstName, String lastName);
     Optional<User> deleteByIdAndFirstNameAndLastName(Integer id, String firstName, String lastName);
+
+    User findByStaffId(String staffId);
 
 }

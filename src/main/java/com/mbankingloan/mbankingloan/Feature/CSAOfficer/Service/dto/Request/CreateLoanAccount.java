@@ -16,6 +16,10 @@ public record CreateLoanAccount(
         List<String> CustomerCif,
 
         @NotNull(message = "LoanApplicationID is required")
-        Integer loanApplicationId
+        Integer loanApplicationId,
+
+        @NotBlank(message = "Phone Number is required")
+        String phoneNumber
+
 ) {
 }
