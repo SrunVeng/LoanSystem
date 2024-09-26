@@ -1,5 +1,6 @@
 package com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,6 +20,10 @@ public record CreateCustomerCiF(
 
         @NotBlank(message = " Gender is required")
         String gender,
+
+        @NotBlank(message = "Email is required")
+        @Email
+        String email,
 
         @NotBlank(message = "Position is required")
         String position,

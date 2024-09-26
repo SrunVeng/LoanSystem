@@ -10,6 +10,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.Response
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request.CreateLoanAccount;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseLoanAccount;
+import com.mbankingloan.mbankingloan.Feature.Customer.Service.dto.Response.ResponseLoanAccountDetails;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public interface LoanAccountMapper {
 
     ResponseLoanAccount toResponseLoanAccountRequest(LoanAccount loanAccount);
 
+    List<ResponseLoanAccountDetails> toResponseLoanAccountDetailsList(List<LoanAccount> loanAccount);
 
 
 }

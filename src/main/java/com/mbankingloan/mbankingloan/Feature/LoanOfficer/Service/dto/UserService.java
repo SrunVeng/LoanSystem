@@ -3,8 +3,8 @@ package com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto;
 import com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto.Request.CreateLoanApplication;
 import com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto.Response.ResponseLoanApplication;
 
-public interface LoanApplicationService {
+public interface UserService {
 
+    Integer findUserIdByStaffId(String StaffId);
 
-    ResponseLoanApplication createLoanApplication(CreateLoanApplication createLoanApplication, Integer staffId);
 }

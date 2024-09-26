@@ -63,7 +63,6 @@ public class Customer {
     private Boolean isBlock;
 
 
-
     //Security
     private Boolean isAccountNonExpired;
     private Boolean isAccountNonLocked;
@@ -72,12 +71,25 @@ public class Customer {
 
 
 
+
     @OneToOne
     @JsonIgnore
     private Branch branchCode;
 
     @ManyToMany
+    @JsonIgnore
     private List<User> use;
+
+    @Column(nullable = false, length = 50)
+    private String password;
+
+    @Size(min = 4, max = 6)
+    @Column(nullable = false)
+    private String pin;
+
+
+    @ManyToMany
+    List<LoanAccount> loanAccounts;
 
 
 }

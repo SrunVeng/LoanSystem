@@ -17,21 +17,21 @@ public class CollateralControllerAllStaffPermit {
 
     private final CollateralRequest collateralRequest;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getAllCollateralTypes")
     List<ResponseCollateralType> getAllCollateralTypes() {
         return collateralRequest.getAllCollateralTypes();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getCollateralTypeById/{id}")
     ResponseCollateralType getCollateralTypeById(@PathVariable int id) {
         return collateralRequest.getCollateralTypeById(id);
     }
 
-//
+
 //    @ResponseStatus(HttpStatus.CREATED)
 //    @PostMapping("/createCollateralType")
 //    ResponseCollateralType createLoanType(@Valid @RequestBody CreateCollateralType createCollateral) {

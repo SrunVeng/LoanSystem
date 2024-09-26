@@ -22,14 +22,12 @@ public class LoanAccount {
     private Integer id;
 
     // System Generate
-    @OneToMany
+    @ManyToMany
     private List<Customer> customer;
 
     @Column(length = 12, unique = true, nullable = false)
     private String actNo;
 
-    private String password;
-    private String pin;
 
     @OneToOne(cascade = CascadeType.ALL)
     private LoanApplication LoanApplication;
@@ -46,8 +44,6 @@ public class LoanAccount {
     // isDeleted canSet to false is OutstandingBalance in LoanApplication is 0
     private Boolean isDeleted;
 
-
-    private Boolean isNewSecuritySet;
 
 
     @ManyToOne

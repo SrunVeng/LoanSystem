@@ -2,7 +2,9 @@ package com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository;
 
 
 import com.mbankingloan.mbankingloan.Domain.Customer;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +33,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 
         Boolean existsAllByCustomerCIFNumberIn(List<String> customerCifNumbers);
+
+    boolean existsByEmail(@NotNull(message = "Email is required") @Email String email);
+
+        Customer findByEmail(String email);
+
+
 }

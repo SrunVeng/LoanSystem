@@ -17,14 +17,14 @@ public class BranchControllerAllStaffPermit {
 
     private final BranchRequest branchRequest;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getAllBranches")
     List<ResponseBranch> getAllBranches() {
         return branchRequest.getAllBranch();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getBrancheById")
     ResponseBranch getAllBranchById(@PathVariable int id) {

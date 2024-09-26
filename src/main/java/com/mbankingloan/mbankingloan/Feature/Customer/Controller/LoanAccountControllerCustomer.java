@@ -7,7 +7,11 @@ import com.mbankingloan.mbankingloan.Feature.Customer.Service.dto.Response.Respo
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,10 +21,14 @@ public class LoanAccountControllerCustomer {
     private LoanAccountCustomerService loanAccountCustomerService;
 
 
+    @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/checkLoanAccount")
-    ResponseLoanAccountDetails checkLoanAccount(@Valid @RequestBody CheckLoanAccount checkLoanAccount) {
-        return loanAccountCustomerService.checkLoanAccount(checkLoanAccount);
+    @GetMapping("/checkAllLoanAccount")
+    List<ResponseLoanAccountDetails> checkAllLoanAccount(@Valid @RequestBody CheckLoanAccount checkLoanAccount, Principal principal) {
+        String username = principal.getName();
+        return loanAccountCustomerService.checkLoanAccount(checkLoanAccount,username);
+
+
     }
 
 

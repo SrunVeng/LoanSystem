@@ -22,35 +22,35 @@ public class LoanControllerAllStaffPermit {
 
     private final LoanRequest loanRequest;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getAllLoans")
     List<ResponseLoan> getAllLoans() {
         return loanRequest.getAllLoans();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getLoanById/{id}")
     ResponseLoan getLoanById(@PathVariable int id) {
         return loanRequest.getLoanById(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getLoanTypeById/{id}")
     ResponseLoanType getLoanTypeById(@PathVariable int id) {
         return loanRequest.getLoanTypeById(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getAllLoanTypes")
     List<ResponseLoanType> getAllLoanTypes() {
         return loanRequest.getAllLoanTypes();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'LOAN-OFFICER', 'CSA-OFFICER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getAllLoanAccountTypes")
     List<ResponseLoanAccountType> getAllLoanAccountTypes() {

@@ -38,6 +38,7 @@ public class User {
     private Branch branchCode;
 
     @ManyToMany
+    @JsonIgnore
     List<Customer> customers;
 
     @Column(nullable = false)

@@ -15,8 +15,17 @@ import java.util.Optional;
 public interface LoanAccountRepository extends JpaRepository<LoanAccount, Integer> {
 
 
+
+
     LoanAccount findByActNo(String actNo);
 
     Boolean existsByactNo(String actNo);
+
+    Boolean existsByPhoneNumber(String actNo);
+
+    List<LoanAccount> findAllByPhoneNumber(String phoneNumber);
+
+
+
 }
 

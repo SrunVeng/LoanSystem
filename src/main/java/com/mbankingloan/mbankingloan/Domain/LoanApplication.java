@@ -1,6 +1,7 @@
 package com.mbankingloan.mbankingloan.Domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,7 @@ public class LoanApplication {
 
     // one loan process by one loan officer , one manager approved and one DrawDown by CSA officer
     @OneToMany
+    @JsonIgnore
     List<User> users;
 
     // Customer can joint loan

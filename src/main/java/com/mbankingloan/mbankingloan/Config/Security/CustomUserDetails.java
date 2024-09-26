@@ -2,7 +2,6 @@ package com.mbankingloan.mbankingloan.Config.Security;
 
 
 import com.mbankingloan.mbankingloan.Domain.User;
-import jdk.jfr.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,7 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @Component
-public class CustomerUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private User user;
 

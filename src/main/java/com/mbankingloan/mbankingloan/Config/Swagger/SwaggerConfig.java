@@ -39,7 +39,6 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
 
-
         Server prodUrl = new Server();
         prodUrl.setUrl(mbankingProdHttp);
         prodUrl.setDescription("Server URL in Prod environment");
@@ -58,15 +57,14 @@ public class SwaggerConfig {
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
                 .info(new Info().title("Veng Srun")
-                        .description("CSTAD MobileBanking API")
+                        .description("MBanking Loan API")
                         .version("1.0.0")
                         .contact(new Contact()
-                                .name("MBanking")
-                                .email("srunveng2023@gmail.com")
-                                .url("https://github.com/SrunVeng?tab=repositories"))
+                                .name("Linkedin")
+                                .url("https://kh.linkedin.com/in/veng-srun?trk=public_profile_browsemap"))
                         .license(new License()
-                                .name("License of API")
-                                .url("API license URL")))
+                                .name("Github")
+                                .url("https://github.com/SrunVeng?tab=repositories")))
                 .servers(List.of(prodUrl, stageUrl, UatUrl, devUrl));
     }
 

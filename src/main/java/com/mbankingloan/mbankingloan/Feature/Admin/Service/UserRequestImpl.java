@@ -84,7 +84,7 @@ public class UserRequestImpl implements UserRequest {
         newUser.setIsCredentialsNonExpired(true);
         newUser.setIsAccountNonExpired(true);
         newUser.setStaffId(generateStaffID.generateStaffId());
-        newUser.setPassword(passwordEncoder.encode("Mbanking@#123"));
+        newUser.setPassword("Mbanking@#123");
         userRepository.save(newUser);
 
         //1.Prepare Email Code In Repo Email
@@ -101,9 +101,6 @@ public class UserRequestImpl implements UserRequest {
         helper.setFrom(adminMail);
         helper.setText(emailVerification.getVerificationCode());
         mailSender.send(mimeMessage);
-
-
-
 
 
 

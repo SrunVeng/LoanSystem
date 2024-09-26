@@ -4,9 +4,11 @@ package com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto;
 import com.mbankingloan.mbankingloan.Domain.CollateralType;
 import com.mbankingloan.mbankingloan.Domain.Customer;
 import com.mbankingloan.mbankingloan.Domain.LoanApplication;
+import com.mbankingloan.mbankingloan.Domain.User;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.CollateralTypeRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanApplicationRepository;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.LoanTypeRepository;
+import com.mbankingloan.mbankingloan.Feature.Admin.Repository.UserRepository;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.CustomerRepository;
 import com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto.Request.CreateLoanApplication;
 import com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto.Response.ResponseLoanApplication;
@@ -21,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +33,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
     private final LoanApplicationRepository loanApplicationRepository;
     private final LoanTypeRepository loanTypeRepository;
     private final CollateralTypeRepository collateralTypeRepository;
+    private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final MoaUtil moaUtil;
     private final CalculateEMI calculateEMI;
@@ -70,7 +74,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 
 
     @Override
-    public ResponseLoanApplication createLoanApplication(CreateLoanApplication createLoanApplication) {
+    public ResponseLoanApplication createLoanApplication(CreateLoanApplication createLoanApplication,Integer Id) {
 
         //Declare
         List<Integer> collateralTypesId = createLoanApplication.collateralID();
@@ -82,8 +86,14 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
         boolean isOutOfRangeCollateralTypeId = collateralTypesId.stream().anyMatch(type -> type < minCollateralTypeId || type > maxCollateralTypeId);
         boolean anyNonExistent = cifNumbers.stream().anyMatch(cif -> !existingCifNumbers.contains(cif));
 
+        List<User> users = new ArrayList<>();
+        users.add(userRepository.findById(Id).orElseThrow());
         //End Declare
+
+
         //Validation
+
+
 
 
         if (anyNonExistent) {
@@ -137,6 +147,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
         loanApplication.setCreatedAt(LocalDate.now());
         loanApplication.setMonthlyInstallment(calculateEMI.CalculateEMI(createLoanApplication, loanApplication));
         loanApplication.setLoanType(loanTypeRepository.findById(createLoanApplication.loanTypeId()).orElseThrow());
+        loanApplication.setUsers(users);
         if (loanApplication.getRequestAmount().compareTo(branchManagerApprovalLimit) <= 0) {
             loanApplication.setIsApprovedByBranchManager(false);
             loanApplication.setIsApprovedByHeadOfLoan(true);

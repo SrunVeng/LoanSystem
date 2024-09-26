@@ -37,13 +37,14 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setIsAccountNonExpired(true);
         newCustomer.setIsAccountNonLocked(true);
         newCustomer.setIsCredentialsNonExpired(true);
-        newCustomer.setIsDeleted(false);
+        newCustomer.setIsDeleted(true);
 
         // create Date
         newCustomer.setCreatedAt(LocalDate.now());
         newCustomer.setIsVerified(false);
-        newCustomer.setIsBlock(true); //set to false when user verify with PhoneNumber
-
+        newCustomer.setIsBlock(true);
+        newCustomer.setPassword("123456");
+        newCustomer.setPin("1234");
         // SetPasswordAndPin
         newCustomer.setCustomerCIFNumber(generateCustomerCIFNumber.generateCustomerCIFNumber());
         // setUser and Branch After Implement Security
