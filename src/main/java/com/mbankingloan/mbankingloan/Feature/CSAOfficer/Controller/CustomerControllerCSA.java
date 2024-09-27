@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,9 @@ public class CustomerControllerCSA {
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
-    ResponseCustomer createCustomer(@Valid @RequestBody CreateCustomerCiF createCustomerCiF) {
-        return customerService.createCustomer(createCustomerCiF);
+    ResponseCustomer createCustomer(@Valid @RequestBody CreateCustomerCiF createCustomerCiF, Principal principal) {
+        String staffId = principal.getName();
+        return customerService.createCustomer(createCustomerCiF,staffId);
 
     }
 

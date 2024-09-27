@@ -76,20 +76,22 @@ public class Customer {
     @JsonIgnore
     private Branch branchCode;
 
-    @ManyToMany
-    @JsonIgnore
-    private List<User> use;
+    @OneToOne
+    private User user;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String password;
 
-    @Size(min = 4, max = 6)
+
     @Column(nullable = false)
     private String pin;
 
 
     @ManyToMany
     List<LoanAccount> loanAccounts;
+
+    @ManyToMany
+    private List<Role> roles;
 
 
 }

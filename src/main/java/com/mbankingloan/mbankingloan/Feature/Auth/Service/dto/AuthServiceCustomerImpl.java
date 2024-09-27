@@ -1,13 +1,15 @@
 package com.mbankingloan.mbankingloan.Feature.Auth.Service.dto;
 
 
-import com.mbankingloan.mbankingloan.Domain.User;
-import com.mbankingloan.mbankingloan.Feature.Admin.Repository.UserRepository;
+import com.mbankingloan.mbankingloan.Domain.Customer;
+import com.mbankingloan.mbankingloan.Domain.LoanAccount;
 import com.mbankingloan.mbankingloan.Feature.Auth.Repository.EmailRepository;
-import com.mbankingloan.mbankingloan.Feature.Auth.Service.dto.Request.Login;
+import com.mbankingloan.mbankingloan.Feature.Auth.Service.dto.Request.CustomerRegisterVerify;
+import com.mbankingloan.mbankingloan.Feature.Auth.Service.dto.Request.LoginCustomer;
 import com.mbankingloan.mbankingloan.Feature.Auth.Service.dto.Request.RefreshTokenRequest;
-import com.mbankingloan.mbankingloan.Feature.Auth.Service.dto.Request.StaffRegisterVerify;
 import com.mbankingloan.mbankingloan.Feature.Auth.Service.dto.Response.JwtResponse;
+import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.CustomerRepository;
+import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.LoanAccountRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,41 +33,43 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+
+public class AuthServiceCustomerImpl implements AuthServiceCustomer {
 
     private final EmailRepository emailRepository;
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoderAccessToken;
     private final JwtEncoder jwtEncoderRefreshToken;
     private final DaoAuthenticationProvider daoAuthenticationProvider;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final LoanAccountRepository loanAccountRepository;
 
     // Constructor with @Qualifier applied
-    public AuthServiceImpl(EmailRepository emailRepository,
-                           UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           JwtEncoder jwtEncoderAccessToken,
-                           JwtEncoder jwtEncoderRefreshToken,
-                           @Qualifier("userAuthenticationProvider") DaoAuthenticationProvider daoAuthenticationProvider,
-                           JwtAuthenticationProvider jwtAuthenticationProvider) {
+    public AuthServiceCustomerImpl(EmailRepository emailRepository,
+                                   CustomerRepository customerRepository,
+                                   PasswordEncoder passwordEncoder,
+                                   JwtEncoder jwtEncoderAccessToken,
+                                   JwtEncoder jwtEncoderRefreshToken,
+                                   @Qualifier("customerAuthenticationProvider") DaoAuthenticationProvider daoAuthenticationProvider,
+                                   JwtAuthenticationProvider jwtAuthenticationProvider, LoanAccountRepository loanAccountRepository) {
         this.emailRepository = emailRepository;
-        this.userRepository = userRepository;
+        this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtEncoderAccessToken = jwtEncoderAccessToken;
         this.jwtEncoderRefreshToken = jwtEncoderRefreshToken;
         this.daoAuthenticationProvider = daoAuthenticationProvider;
         this.jwtAuthenticationProvider = jwtAuthenticationProvider;
+        this.loanAccountRepository = loanAccountRepository;
     }
 
 
     @Override
-    public JwtResponse login(Login login) {
+    public JwtResponse loginCustomer(LoginCustomer loginCustomer) {
         //1. Authenticate
-        Authentication auth = new UsernamePasswordAuthenticationToken(login.StaffId()
-                , login.password());
+        Authentication auth = new UsernamePasswordAuthenticationToken(loginCustomer.PhoneNumber()
+                , loginCustomer.password());
         auth = daoAuthenticationProvider.authenticate(auth);
-
 
         String scope = auth.
                 getAuthorities().stream().map(GrantedAuthority::getAuthority)
@@ -77,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
         Instant now = Instant.now();
         JwtClaimsSet accessJwtClaimsSet = JwtClaimsSet.builder()
                 .id(auth.getName())
-                .subject("Access Token")
+                .subject(auth.getName())
                 .issuer(auth.getName())
                 .issuedAt(now)
                 .expiresAt(now.plus(5, ChronoUnit.MINUTES))
@@ -107,12 +111,13 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-
     @Override
-    public JwtResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+    public JwtResponse refreshTokenCustomer(RefreshTokenRequest refreshTokenRequest) {
+
         Authentication auth = new BearerTokenAuthenticationToken(refreshTokenRequest.refreshToken());
 
         auth = jwtAuthenticationProvider.authenticate(auth);
+
 
         String scope = auth.getAuthorities()
                 .stream()
@@ -164,29 +169,28 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    @Override
-    public void registerVerify(StaffRegisterVerify staffRegisterVerify) {
-
-        if (!userRepository.existsByEmail(staffRegisterVerify.email())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email is incorrect");
-        }
-
-        if (!emailRepository.existsByVerificationCode(staffRegisterVerify.verificationCode())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Verification code is incorrect");
-        }
-
-        if (!staffRegisterVerify.newPassword().equals(staffRegisterVerify.confirmPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
-        }
-
-
-        User user = userRepository.findByEmail(staffRegisterVerify.email());
-        user.setPassword(passwordEncoder.encode(staffRegisterVerify.newPassword()));
-        user.setIsVerified(true);
-        user.setIsBlock(false);
-        user.setIsDeleted(false);
-        userRepository.save(user);
-    }
-
-
+//    @Override
+//    public void registerVerifyCustomer(CustomerRegisterVerify customerRegisterVerify) {
+//
+//        if (!customerRepository.existsByEmail(customerRegisterVerify.email())) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email is incorrect");
+//        }
+//
+//
+//        if (!emailRepository.existsByVerificationCode(customerRegisterVerify.verificationCode())) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Verification code is incorrect");
+//        }
+//
+//        if (!customerRegisterVerify.newPassword().equals(customerRegisterVerify.confirmPassword())) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
+//        }
+//
+//        Customer customer = customerRepository.findByEmail(customerRegisterVerify.email());
+//        customer.setPin(passwordEncoder.encode(customerRegisterVerify.Pin()));
+//        customer.setPassword(passwordEncoder.encode(customerRegisterVerify.newPassword()));
+//        customer.setIsVerified(true);
+//        customer.setIsBlock(false);
+//
+//        customerRepository.save(customer);
+//    }
 }

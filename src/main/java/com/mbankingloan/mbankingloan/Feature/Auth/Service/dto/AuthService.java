@@ -9,13 +9,10 @@ import jakarta.validation.Valid;
 public interface AuthService {
 
     JwtResponse login(@Valid Login login);
-    
 
     JwtResponse refreshToken(@Valid RefreshTokenRequest refreshTokenRequest);
 
     void registerVerify(@Valid StaffRegisterVerify staffRegisterVerify);
 
 
-
-    void registerVerifyCustomer(@Valid CustomerRegisterVerify customerRegisterVerify);
 }

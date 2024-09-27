@@ -35,6 +35,7 @@ public class LoanAccount {
     private String phoneNumber;
 
 
+
     // balance will set to LoanAmount of loanApplication if isDrawdown is true
     private BigDecimal balance;
 

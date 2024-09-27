@@ -21,6 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String staffId;
 
     @Column(nullable = false)
@@ -35,9 +36,10 @@ public class User {
     private String phoneNumber;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Branch branchCode;
 
-    @ManyToMany
+    @OneToMany
     @JsonIgnore
     List<Customer> customers;
 

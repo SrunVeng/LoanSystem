@@ -44,7 +44,6 @@ public class UserRequestImpl implements UserRequest {
     private final RoleRepository roleRepository;
     private final GenerateStaffID generateStaffID;
     private final GenerateVerificationCode generateVerificationCode;
-    private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final EmailRepository emailRepository;
     @Value("${spring.mail.username}")
@@ -91,7 +90,7 @@ public class UserRequestImpl implements UserRequest {
         EmailVerification emailVerification = new EmailVerification();
         emailVerification.setUser(newUser);
         emailVerification.setVerificationCode(generateVerificationCode.generateSecureCode());
-        emailVerification.setExpiryTime(LocalTime.now().plusHours(12));
+        emailVerification.setExpiryTime(LocalTime.now().plusHours(1));
         emailRepository.save(emailVerification);
         //
         //2.Send Mail
@@ -101,8 +100,6 @@ public class UserRequestImpl implements UserRequest {
         helper.setFrom(adminMail);
         helper.setText(emailVerification.getVerificationCode());
         mailSender.send(mimeMessage);
-
-
 
 
         return userMapper.toUserResponse(newUser);

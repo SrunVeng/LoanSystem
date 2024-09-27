@@ -2,6 +2,10 @@ package com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto;
 
 
 import com.mbankingloan.mbankingloan.Domain.Customer;
+import com.mbankingloan.mbankingloan.Domain.Role;
+import com.mbankingloan.mbankingloan.Domain.User;
+import com.mbankingloan.mbankingloan.Feature.Admin.Repository.RoleRepository;
+import com.mbankingloan.mbankingloan.Feature.Admin.Repository.UserRepository;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.CustomerRepository;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request.CreateCustomerCiF;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request.UpdateCustomer;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,24 +30,32 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
     private final GenerateCustomerCIFNumber generateCustomerCIFNumber;
+    private final RoleRepository roleRepository;
     private final CustomerMapper customerMapper;
 
 
-    @Override
     @Transactional
-    public ResponseCustomer createCustomer(CreateCustomerCiF createCustomerCiF) {
+    @Override
+    public ResponseCustomer createCustomer(CreateCustomerCiF createCustomerCiF, String staffId) {
         Customer newCustomer = customerMapper.fromCreateCustomerRequest(createCustomerCiF);
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findById(5).orElseThrow());
+
+        User user = userRepository.findByStaffId(staffId);
+
         //setSecurity
         newCustomer.setIsAccountNonExpired(true);
+        newCustomer.setUser(user);
         newCustomer.setIsAccountNonLocked(true);
         newCustomer.setIsCredentialsNonExpired(true);
-        newCustomer.setIsDeleted(true);
-
+        newCustomer.setIsDeleted(false);
         // create Date
         newCustomer.setCreatedAt(LocalDate.now());
         newCustomer.setIsVerified(false);
-        newCustomer.setIsBlock(true);
+        newCustomer.setIsBlock(false);
+        newCustomer.setRoles(roles);
         newCustomer.setPassword("123456");
         newCustomer.setPin("1234");
         // SetPasswordAndPin

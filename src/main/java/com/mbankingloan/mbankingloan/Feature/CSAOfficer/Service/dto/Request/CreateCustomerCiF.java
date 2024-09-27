@@ -37,6 +37,7 @@ public record CreateCustomerCiF(
         @NotBlank(message = "NID is required")
         String nationalCardId,
 
+
         String cityOrProvince,
         String khanOrDistrict,
         String sangKatOrCommune,
@@ -45,7 +46,6 @@ public record CreateCustomerCiF(
 
         @NotBlank(message = "Phone number is required")
         String phoneNumber
-
 
         //Optional Customer can set by theirOwn
 //        @Email

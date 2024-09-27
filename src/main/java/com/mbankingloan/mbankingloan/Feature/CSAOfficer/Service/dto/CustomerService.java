@@ -7,13 +7,15 @@ import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.Res
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseCustomerDetails;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface CustomerService {
 
 
-    ResponseCustomer createCustomer(@Valid CreateCustomerCiF createCustomerCiF);
+    @Transactional
+    ResponseCustomer createCustomer(CreateCustomerCiF createCustomerCiF, String staffId);
 
     ResponseCustomerDetails updateCustomer(@Valid UpdateCustomer updateCustomer);
 

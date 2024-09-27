@@ -3,6 +3,7 @@ package com.mbankingloan.mbankingloan.Util;
 
 import com.mbankingloan.mbankingloan.Domain.*;
 import com.mbankingloan.mbankingloan.Feature.Admin.Repository.*;
+import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.CustomerRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +24,12 @@ public class DataInit {
     private final LoanRepository loanRepository;
     private final CollateralTypeRepository collateralTypeRepository;
     private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
     private final AccountTypeRepository accountTypeRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GenerateCustomerCIFNumber generateCustomerCIFNumber;
 
 
     @Value("${loan.min-value}")
@@ -44,6 +47,7 @@ public class DataInit {
         BranchInit();
         UserInit();
         LoanAccountTypeInit();
+        CustomerInit();
     }
 
     private void LoanTypeInit() {
@@ -243,19 +247,29 @@ public class DataInit {
 
 
     private void UserInit(){
-        List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findById(1).orElseThrow());
+        List<Role> adminRoles = new ArrayList<>();
+        adminRoles.add(roleRepository.findById(1).orElseThrow());
+
+        List<Role> managerRoles = new ArrayList<>();
+        managerRoles.add(roleRepository.findById(2).orElseThrow());
+
+        List<Role> loanOfficerRoles = new ArrayList<>();
+        loanOfficerRoles.add(roleRepository.findById(3).orElseThrow());
+
+        List<Role> csaRoles = new ArrayList<>();
+        csaRoles.add(roleRepository.findById(4).orElseThrow());
+
         User admin = User.builder()
-                .email("vengsrun2017new@gmail.com")
+                .email("fake@gmail.com")
                 .birthDate(LocalDate.of(1989,12,1))
                 .branchCode(branchRepository.findById(1).orElseThrow())
-                .firstName("Veng")
-                .lastName("Srun")
+                .firstName("testing")
+                .lastName("user")
                 .hireDate(LocalDate.of(2018,1,1))
                 .createdAt(LocalDate.now())
-                .staffId("2114")
+                .staffId("1")
                 .position("Software Engineer")
-                .phoneNumber("086252502")
+                .phoneNumber("087276512")
                 .KhanDistrict("7Makara")
                 .village("VealVong")
                 .provinceCity("PhnomPenh")
@@ -267,9 +281,86 @@ public class DataInit {
                 .isVerified(true)
                 .isBlock(false)
                 .password(passwordEncoder.encode("Srun@123"))
-                .roles(roles)
+                .roles(adminRoles)
                 .build();
-        userRepository.saveAll(List.of(admin));
+
+        User manager = User.builder()
+                .email("fake2@gmail.com")
+                .birthDate(LocalDate.of(1989,12,1))
+                .branchCode(branchRepository.findById(1).orElseThrow())
+                .firstName("testing")
+                .lastName("user")
+                .hireDate(LocalDate.of(2018,1,1))
+                .createdAt(LocalDate.now())
+                .staffId("2")
+                .position("Head of Loan Branch Manager")
+                .phoneNumber("086276512")
+                .KhanDistrict("7Makara")
+                .village("VealVong")
+                .provinceCity("PhnomPenh")
+                .country("Cambodia")
+                .isAccountNonExpired(true)
+                .isCredentialsNonExpired(true)
+                .isDeleted(false)
+                .isAccountNonLocked(true)
+                .isVerified(true)
+                .isBlock(false)
+                .password(passwordEncoder.encode("Srun@123"))
+                .roles(managerRoles)
+                .build();
+
+
+        User loanOfficer = User.builder()
+                .email("fake3@gmail.com")
+                .birthDate(LocalDate.of(1989,12,1))
+                .branchCode(branchRepository.findById(1).orElseThrow())
+                .firstName("testing")
+                .lastName("user")
+                .hireDate(LocalDate.of(2018,1,1))
+                .createdAt(LocalDate.now())
+                .staffId("3")
+                .position("Loan officer")
+                .phoneNumber("086276518")
+                .KhanDistrict("7Makara")
+                .village("VealVong")
+                .provinceCity("PhnomPenh")
+                .country("Cambodia")
+                .isAccountNonExpired(true)
+                .isCredentialsNonExpired(true)
+                .isDeleted(false)
+                .isAccountNonLocked(true)
+                .isVerified(true)
+                .isBlock(false)
+                .password(passwordEncoder.encode("Srun@123"))
+                .roles(loanOfficerRoles)
+                .build();
+
+        User csaOfficer = User.builder()
+                .email("fake4@gmail.com")
+                .birthDate(LocalDate.of(1989,12,1))
+                .branchCode(branchRepository.findById(1).orElseThrow())
+                .firstName("testing")
+                .lastName("user")
+                .hireDate(LocalDate.of(2018,1,1))
+                .createdAt(LocalDate.now())
+                .staffId("4")
+                .position("Loan officer")
+                .phoneNumber("086276912")
+                .KhanDistrict("7Makara")
+                .village("VealVong")
+                .provinceCity("PhnomPenh")
+                .country("Cambodia")
+                .isAccountNonExpired(true)
+                .isCredentialsNonExpired(true)
+                .isDeleted(false)
+                .isAccountNonLocked(true)
+                .isVerified(true)
+                .isBlock(false)
+                .password(passwordEncoder.encode("Srun@123"))
+                .roles(csaRoles)
+                .build();
+
+        userRepository.saveAll(List.of(admin, manager, csaOfficer, loanOfficer));
     }
 
     private void LoanAccountTypeInit(){
@@ -289,5 +380,33 @@ public class DataInit {
 
         accountTypeRepository.saveAll(List.of(loanAccountType1, loanAccountType2, loanAccountType3));
     }
+
+    private void CustomerInit(){
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findById(5).orElseThrow());
+
+        Customer customer1 = Customer.builder()
+                .email("vengsrun2019kh@gmail.com")
+                .pin(passwordEncoder.encode("1234"))
+                .password(passwordEncoder.encode("123456"))
+                .customerCIFNumber(generateCustomerCIFNumber.generateCustomerCIFNumber())
+                .isVerified(false)
+                .phoneNumber("086252502")
+                .nationalCardId("fakeNID")
+                .isAccountNonExpired(true)
+                .isCredentialsNonExpired(true)
+                .isDeleted(false)
+                .isBlock(false)
+                .isAccountNonLocked(true)
+                .createdAt(LocalDate.now())
+                .gender("Male")
+                .firstName("Testing")
+                .lastName("Customer")
+                .roles(roles)
+                .companyName("asd")
+                .build();
+        customerRepository.saveAll(List.of(customer1));
+    }
+
 
 }

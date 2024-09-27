@@ -21,6 +21,9 @@ public class EmailVerification {
     @OneToOne
     private User user;
 
+    @OneToOne
+    private Customer customer;
+
 
     private String verificationCode;
 

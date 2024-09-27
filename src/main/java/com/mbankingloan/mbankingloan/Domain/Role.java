@@ -17,7 +17,6 @@ import java.util.List;
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,5 +32,7 @@ public class Role implements GrantedAuthority {
         return "ROLE_" + name;
     }
 
+    @ManyToMany
+    List<Customer> customer;
 
 }

@@ -21,17 +21,17 @@ public class LoanAccountControllerCustomer {
     private LoanAccountCustomerService loanAccountCustomerService;
 
 
-    @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_CUSTOMER', 'SCOPE_ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/checkAllLoanAccount")
-    List<ResponseLoanAccountDetails> checkAllLoanAccount(@Valid @RequestBody CheckLoanAccount checkLoanAccount, Principal principal) {
+    @PostMapping("/checkAllLoanAccount")
+    public List<ResponseLoanAccountDetails> checkAllLoanAccount(
+            @Valid @RequestBody CheckLoanAccount checkLoanAccount, Principal principal) {
         String username = principal.getName();
-        return loanAccountCustomerService.checkLoanAccount(checkLoanAccount,username);
-
-
+        return loanAccountCustomerService.checkLoanAccount(checkLoanAccount, username);
     }
-
-
-
-
 }
+
+
+
+
+
