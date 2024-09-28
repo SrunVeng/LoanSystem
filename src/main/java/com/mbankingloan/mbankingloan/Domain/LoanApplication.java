@@ -22,20 +22,17 @@ public class LoanApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //Micro_Loan , large .... loan ?
-    @ManyToOne
-    Loan loan;
 
-    // one loanApplication can be TermLoan,OD or HomeLoan
     @ManyToOne
-    private LoanType loanType;
+    private Loan loan;
 
-    // one loan process by one loan officer , one manager approved and one DrawDown by CSA officer
-    @OneToMany
+
+
+    @ManyToOne
     @JsonIgnore
-    List<User> users;
+    private User user;
 
-    // Customer can joint loan
+
     @OneToMany
     private List<Customer> customer;
 
@@ -43,7 +40,7 @@ public class LoanApplication {
 
     private Integer tenure;
 
-    //system generate by ID input
+
     @ManyToMany
     private List<CollateralType> collateralTypes;
 
@@ -53,27 +50,25 @@ public class LoanApplication {
 
     private BigDecimal interestRate;
 
-    //system generate
+
     private LocalDate maturityDate;
-    //system generate
+
     private BigDecimal monthlyInstallment;
-    //system generate
+
     private BigDecimal moa;
-    //system generate
-    private BigDecimal downPayment;
+
 
     private LocalDate createdAt;
 
     private Boolean isApprovedByBranchManager;
     private Boolean isApprovedByHeadOfLoan;
 
-    //LoanCanDrawDown can set to true if isApprovedBoth is True
+
     private Boolean isDrawDown;
 
 
     private Boolean isRejectedByBM;
     private Boolean isRejectedByHeadOfLoan;
-
 
 
 }

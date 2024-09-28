@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -51,6 +52,9 @@ public class CustomCustomerDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return customer.getRoles();
+        // Assuming customer.getRoles() returns a single role as a List or Set
+        return Collections.singletonList(customer.getRoles());
     }
+
+
 }

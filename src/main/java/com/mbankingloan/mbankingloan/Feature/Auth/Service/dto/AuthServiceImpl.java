@@ -77,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
         Instant now = Instant.now();
         JwtClaimsSet accessJwtClaimsSet = JwtClaimsSet.builder()
                 .id(auth.getName())
-                .subject("Access Token")
+                .subject(auth.getName())
                 .issuer(auth.getName())
                 .issuedAt(now)
                 .expiresAt(now.plus(5, ChronoUnit.MINUTES))
@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
 
         JwtClaimsSet refreshJwtClaimsSet = JwtClaimsSet.builder()
                 .id(auth.getName())
-                .subject("Refresh Token")
+                .subject(auth.getName())
                 .issuer(auth.getName())
                 .issuedAt(now)
                 .expiresAt(now.plus(5, ChronoUnit.DAYS))
@@ -128,6 +128,7 @@ public class AuthServiceImpl implements AuthService {
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .id(jwt.getId())
                 .issuedAt(now)
+                .subject(auth.getName())
                 .issuer("web")
                 .audience(List.of("nextjs", "reactjs"))
                 .subject("Access Token")
@@ -146,6 +147,7 @@ public class AuthServiceImpl implements AuthService {
             JwtClaimsSet jwtClaimsSetRefreshToken = JwtClaimsSet.builder()
                     .id(auth.getName())
                     .issuedAt(now)
+                    .subject(auth.getName())
                     .issuer("web")
                     .audience(List.of("nextjs", "reactjs"))
                     .subject("Refresh Token")

@@ -44,6 +44,8 @@ public class Customer {
     private String gender;
     private String profileImageUrl;
 
+    @OneToOne
+    private File file;
 
 
     private String cityOrProvince;
@@ -88,10 +90,10 @@ public class Customer {
 
 
     @ManyToMany
-    List<LoanAccount> loanAccounts;
+    private List<LoanAccount> loanAccounts;
 
-    @ManyToMany
-    private List<Role> roles;
+    @ManyToOne
+    private Role roles;
 
 
 }

@@ -36,8 +36,9 @@ public class CustomerControllerCSA {
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/update")
-    ResponseCustomerDetails updateCustomer(@Valid @RequestBody UpdateCustomer updateCustomer) {
-        return customerService.updateCustomer(updateCustomer);
+    ResponseCustomerDetails updateCustomer(@Valid @RequestBody UpdateCustomer updateCustomer,Principal principal) {
+        String staffId = principal.getName();
+        return customerService.updateCustomer(updateCustomer,staffId);
     }
 
 
@@ -65,15 +66,17 @@ public class CustomerControllerCSA {
     @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/deleteCustomerByCif/{Cif}")
-    ResponseCustomerDetails deleteCustomerByCif(@PathVariable String Cif) {
-        return customerService.deleteCustomerByCif(Cif);
+    ResponseCustomerDetails deleteCustomerByCif(@PathVariable String Cif,Principal principal) {
+        String staffId = principal.getName();
+        return customerService.deleteCustomerByCif(Cif,staffId);
     }
 
     @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/recoverCustomerByCif/{Cif}")
-    ResponseCustomerDetails recoverCustomerByCif(@PathVariable String Cif) {
-        return customerService.recoverCustomerByCif(Cif);
+    ResponseCustomerDetails recoverCustomerByCif(@PathVariable String Cif,Principal principal) {
+        String staffId = principal.getName();
+        return customerService.recoverCustomerByCif(Cif,staffId);
     }
 
 

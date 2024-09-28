@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 
 
 @RestController
@@ -27,23 +28,26 @@ public class LoanAccountControllerCSA {
     @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
-    ResponseLoanAccount createLoanAccount(@Valid @RequestBody CreateLoanAccount createLoanAccount) {
-        return loanAccountService.createLoanAccount(createLoanAccount);
+    ResponseLoanAccount createLoanAccount(@Valid @RequestBody CreateLoanAccount createLoanAccount, Principal principal) {
+        String staffId = principal.getName();
+        return loanAccountService.createLoanAccount(createLoanAccount,staffId);
     }
 
     @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/deleteById/{Id}")
-    ResponseLoanAccount deleteLoanAccountById(@PathVariable Integer Id) {
-        return loanAccountService.deleteLoanAccount(Id);
+    ResponseLoanAccount deleteLoanAccountById(@PathVariable Integer Id,Principal principal) {
+        String staffId = principal.getName();
+        return loanAccountService.deleteLoanAccount(Id,staffId);
     }
 
 
     @PreAuthorize("hasAnyAuthority( 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_CSA-OFFICER')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/drawDownLoan")
-    ResponseLoanAccount drawDownLoan(@Valid @RequestBody DrawDownLoanAccount drawDownLoanAccount) {
-        return loanAccountService.drawDownLoan(drawDownLoanAccount);
+    ResponseLoanAccount drawDownLoan(@Valid @RequestBody DrawDownLoanAccount drawDownLoanAccount,Principal principal) {
+        String staffId = principal.getName();
+        return loanAccountService.drawDownLoan(drawDownLoanAccount,staffId);
     }
 
 

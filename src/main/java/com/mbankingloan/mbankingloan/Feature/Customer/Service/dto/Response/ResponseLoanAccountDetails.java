@@ -2,7 +2,6 @@ package com.mbankingloan.mbankingloan.Feature.Customer.Service.dto.Response;
 
 
 import com.mbankingloan.mbankingloan.Domain.Customer;
-import com.mbankingloan.mbankingloan.Domain.LoanAccountType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,7 +14,6 @@ public record ResponseLoanAccountDetails(String actNo,
                                          Boolean isActive,
                                          Boolean isDeleted,
                                          LocalDate CreatedAt,
-                                         LoanAccountType loanAccountType,
                                          List<Customer> customer
 
 ) {

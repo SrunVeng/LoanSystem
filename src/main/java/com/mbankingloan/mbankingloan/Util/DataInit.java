@@ -27,16 +27,10 @@ public class DataInit {
     private final CustomerRepository customerRepository;
     private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
-    private final AccountTypeRepository accountTypeRepository;
     private final PasswordEncoder passwordEncoder;
     private final GenerateCustomerCIFNumber generateCustomerCIFNumber;
 
 
-    @Value("${loan.min-value}")
-    private BigDecimal minLoanValue;
-
-    @Value("${loan.max-value}")
-    private BigDecimal maxLoanValue;
 
     @PostConstruct
     void init() {
@@ -46,7 +40,6 @@ public class DataInit {
         RoleInit();
         BranchInit();
         UserInit();
-        LoanAccountTypeInit();
         CustomerInit();
     }
 
@@ -55,21 +48,14 @@ public class DataInit {
         LoanType loanType1 = LoanType.builder()
                 .name("TermLoan")
                 .isDeleted(false)
-                .tenure(120)
                 .build();
 
         LoanType loanType2 = LoanType.builder()
                 .name("OverDaft")
                 .isDeleted(false)
-                .tenure(120)
                 .build();
 
-        LoanType loanType3 = LoanType.builder()
-                .name("HomeLoan")
-                .isDeleted(false)
-                .tenure(180)
-                .build();
-        loanTypeRepository.saveAll(List.of(loanType1, loanType2, loanType3));
+        loanTypeRepository.saveAll(List.of(loanType1, loanType2));
     }
 
     private void CollateralInit() {
@@ -98,9 +84,6 @@ public class DataInit {
 
 
             LoanType termLoan = loanTypeRepository.findById(1).orElseThrow();
-            LoanType homeLoan = loanTypeRepository.findById(3).orElseThrow();
-
-
             List<CollateralType> allCollateralTypes = collateralTypeRepository.findAll();
 
             List<CollateralType> hardSoftFixedCollateralTypes = new ArrayList<>();
@@ -113,12 +96,12 @@ public class DataInit {
 
 
 
-
             Loan personalLoan = Loan.builder()
                     .name("PersonalLoan")
-                    .amountLimit(minLoanValue)
+                    .amountLimit(BigDecimal.valueOf(20000))
                     .interestRate(BigDecimal.valueOf(18.00))
                     .loantype(termLoan)
+                    .tenure(120)
                     .isDeleted(false)
                     .collateralTypes(allCollateralTypes)
                     .build();
@@ -128,6 +111,7 @@ public class DataInit {
                     .amountLimit(BigDecimal.valueOf(50000))
                     .interestRate(BigDecimal.valueOf(17.50))
                     .loantype(termLoan)
+                    .tenure(120)
                     .isDeleted(false)
                     .collateralTypes(hardSoftFixedCollateralTypes)
                     .build();
@@ -137,6 +121,7 @@ public class DataInit {
                     .amountLimit(BigDecimal.valueOf(100000))
                     .interestRate(BigDecimal.valueOf(15.85))
                     .loantype(termLoan)
+                    .tenure(120)
                     .isDeleted(false)
                     .collateralTypes(hardFixedCollateralTypes)
                     .build();
@@ -146,6 +131,7 @@ public class DataInit {
                     .amountLimit(BigDecimal.valueOf(500000))
                     .interestRate(BigDecimal.valueOf(13.85))
                     .loantype(termLoan)
+                    .tenure(120)
                     .isDeleted(false)
                     .collateralTypes(hardFixedCollateralTypes)
                     .build();
@@ -155,29 +141,24 @@ public class DataInit {
                     .amountLimit(BigDecimal.valueOf(2000000))
                     .interestRate(BigDecimal.valueOf(13.85))
                     .loantype(termLoan)
+                    .tenure(120)
                     .isDeleted(false)
                     .collateralTypes(hardFixedCollateralTypes)
                     .build();
 
             Loan commercialBusinessLoan = Loan.builder()
                     .name("Commercial-BusinessLoan")
-                    .amountLimit(maxLoanValue)
+                    .amountLimit(BigDecimal.valueOf(10000000))
                     .interestRate(BigDecimal.valueOf(9.5))
                     .loantype(termLoan)
+                    .tenure(120)
                     .isDeleted(false)
                     .collateralTypes(hardFixedCollateralTypes)
                     .build();
 
-            Loan HomePurchase = Loan.builder()
-                    .name("Home-Purchase")
-                    .amountLimit(maxLoanValue)
-                    .interestRate(BigDecimal.valueOf(8.5))
-                    .loantype(homeLoan)
-                    .isDeleted(false)
-                    .collateralTypes(hardFixedCollateralTypes)
-                    .build();
 
-            loanRepository.saveAll(List.of(HomePurchase,personalLoan, microBusinessLoan, smallBusinessLoan,mediumBusinessLoan,largeBusinessLoan,commercialBusinessLoan));
+
+            loanRepository.saveAll(List.of(personalLoan, microBusinessLoan, smallBusinessLoan,mediumBusinessLoan,largeBusinessLoan,commercialBusinessLoan));
 
     }
 
@@ -363,27 +344,7 @@ public class DataInit {
         userRepository.saveAll(List.of(admin, manager, csaOfficer, loanOfficer));
     }
 
-    private void LoanAccountTypeInit(){
-
-        LoanAccountType loanAccountType1 = LoanAccountType.builder()
-                .name("Term-Loan_Account")
-                .isDeleted(false)
-                .build();
-        LoanAccountType loanAccountType2 = LoanAccountType.builder()
-                .name("OverDaft_Loan_Account")
-                .isDeleted(false)
-                .build();
-        LoanAccountType loanAccountType3 = LoanAccountType.builder()
-                .name("Home-Loan_Account")
-                .isDeleted(false)
-                .build();
-
-        accountTypeRepository.saveAll(List.of(loanAccountType1, loanAccountType2, loanAccountType3));
-    }
-
     private void CustomerInit(){
-        List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findById(5).orElseThrow());
 
         Customer customer1 = Customer.builder()
                 .email("vengsrun2019kh@gmail.com")
@@ -402,7 +363,7 @@ public class DataInit {
                 .gender("Male")
                 .firstName("Testing")
                 .lastName("Customer")
-                .roles(roles)
+                .roles(roleRepository.findById(5).orElseThrow())
                 .companyName("asd")
                 .build();
         customerRepository.saveAll(List.of(customer1));

@@ -28,9 +28,10 @@ public class Loan {
     private List<CollateralType> collateralTypes;
 
 
-
     private BigDecimal interestRate;
 
+
+    private Integer tenure;
 
     @ManyToOne
     private LoanType loantype;

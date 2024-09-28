@@ -11,6 +11,7 @@ import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request.Crea
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Request.UpdateCustomer;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseCustomer;
 import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Service.dto.Response.ResponseCustomerDetails;
+import com.mbankingloan.mbankingloan.Feature.File.FileRepository;
 import com.mbankingloan.mbankingloan.Mapper.CustomerMapper;
 import com.mbankingloan.mbankingloan.Util.GenerateCustomerCIFNumber;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseCustomer createCustomer(CreateCustomerCiF createCustomerCiF, String staffId) {
         Customer newCustomer = customerMapper.fromCreateCustomerRequest(createCustomerCiF);
-        List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findById(5).orElseThrow());
-
         User user = userRepository.findByStaffId(staffId);
 
         //setSecurity
@@ -55,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setCreatedAt(LocalDate.now());
         newCustomer.setIsVerified(false);
         newCustomer.setIsBlock(false);
-        newCustomer.setRoles(roles);
+        newCustomer.setRoles(roleRepository.findById(5).orElseThrow());
         newCustomer.setPassword("123456");
         newCustomer.setPin("1234");
         // SetPasswordAndPin
@@ -69,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public ResponseCustomerDetails updateCustomer(UpdateCustomer updateCustomer) {
+    public ResponseCustomerDetails updateCustomer(UpdateCustomer updateCustomer,String staffId) {
 
         if (!customerRepository.existsByCustomerCIFNumber(updateCustomer.customerCIFNumber())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CustomerCIF not found");
@@ -77,8 +75,8 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findByCustomerCIFNumber(updateCustomer.customerCIFNumber());
 
         customerMapper.fromUpdateCustomerRequestPartially(customer, updateCustomer);
+        customer.setUser(userRepository.findByStaffId(staffId));
         customerRepository.save(customer);
-
         return customerMapper.toResponseCustomerDetails(customer);
     }
 
@@ -113,7 +111,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public ResponseCustomerDetails deleteCustomerByCif(String cif) {
+    public ResponseCustomerDetails deleteCustomerByCif(String cif,String staffId) {
 
         if (!customerRepository.existsByCustomerCIFNumber(cif)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CustomerCIF not found");
@@ -121,19 +119,21 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer customer = customerRepository.findByCustomerCIFNumber(cif);
         customer.setIsDeleted(true);
+        customer.setUser(userRepository.findByStaffId(staffId));
         customerRepository.save(customer);
         return customerMapper.toResponseCustomerDetails(customer);
     }
 
     @Override
     @Transactional
-    public ResponseCustomerDetails recoverCustomerByCif(String cif) {
+    public ResponseCustomerDetails recoverCustomerByCif(String cif,String staffId) {
         if (!customerRepository.existsByCustomerCIFNumber(cif)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CustomerCIF not found");
         }
 
         Customer customer = customerRepository.findByCustomerCIFNumber(cif);
         customer.setIsDeleted(false);
+        customer.setUser(userRepository.findByStaffId(staffId));
         customerRepository.save(customer);
         return customerMapper.toResponseCustomerDetails(customer);
     }

@@ -1,10 +1,12 @@
 package com.mbankingloan.mbankingloan.Domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -21,12 +23,12 @@ public class LoanType {
 
     private String name;
 
-    private Integer tenure;
 
     private Boolean isDeleted;
 
-//    @OneToMany(mappedBy = "loantype")
-//    private List<Loan> loans;
+    @OneToMany(mappedBy = "loantype")
+    @JsonIgnore
+    private List<Loan> loans;
 
 
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
@@ -59,5 +60,29 @@ public class ApiException {
 
         return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    ResponseEntity<?> MaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        ErrorDetailsResponse<?> errorDetailsResponse =
+                ErrorDetailsResponse.builder()
+                        .code(e.getStatusCode().toString())
+                        .title(e.getTitleMessageCode())
+                        .details(e.getDetailMessageCode()).build();
+
+        return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), HttpStatus.PAYLOAD_TOO_LARGE);
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<?> IllegalArgumentException(IllegalArgumentException e) {
+        ErrorDetailsResponse<?> errorDetailsResponse =
+                ErrorDetailsResponse.builder()
+                        .code(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                        .title(e.getLocalizedMessage())
+                        .details(e.getMessage()).build();
+
+        return new ResponseEntity<>(ErrorResponse.builder().error(errorDetailsResponse).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
 
 }

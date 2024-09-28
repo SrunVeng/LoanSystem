@@ -26,9 +26,8 @@ public class LoanApplicationControllerLoanOfficer {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     ResponseLoanApplication createLoanApplication(@Valid @RequestBody CreateLoanApplication createLoanApplication, Principal principal) {
-        String username = principal.getName();
-        Integer Id = userService.findUserIdByStaffId(username);
-        return loanApplicationService.createLoanApplication(createLoanApplication,Id);
+        String StaffId = principal.getName();
+        return loanApplicationService.createLoanApplication(createLoanApplication,StaffId);
     }
 
 

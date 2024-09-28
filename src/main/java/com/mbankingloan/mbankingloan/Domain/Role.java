@@ -32,7 +32,7 @@ public class Role implements GrantedAuthority {
         return "ROLE_" + name;
     }
 
-    @ManyToMany
-    List<Customer> customer;
+    @OneToMany(mappedBy = "roles")
+    private List<Customer> customer;
 
 }

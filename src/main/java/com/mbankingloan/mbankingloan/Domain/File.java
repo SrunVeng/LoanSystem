@@ -22,8 +22,11 @@ public class File {
     private String contentType;
     private String uri;
 
-    @ManyToOne
+    @OneToOne
     private User user;
+
+    @OneToOne
+    private Customer customer;
 
 
 }

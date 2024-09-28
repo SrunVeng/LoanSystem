@@ -17,7 +17,7 @@ public interface CustomerService {
     @Transactional
     ResponseCustomer createCustomer(CreateCustomerCiF createCustomerCiF, String staffId);
 
-    ResponseCustomerDetails updateCustomer(@Valid UpdateCustomer updateCustomer);
+    ResponseCustomerDetails updateCustomer(@Valid UpdateCustomer updateCustomer,String staffId);
 
     ResponseCustomerDetails getCustomerByCifNumber(String cif);
 
@@ -27,9 +27,9 @@ public interface CustomerService {
 
     ResponseCustomerDetails getCustomerByPhoneNumber(String phoneNumber);
 
-    ResponseCustomerDetails deleteCustomerByCif(String cif);
+    ResponseCustomerDetails deleteCustomerByCif(String cif,String staffId);
 
-    ResponseCustomerDetails recoverCustomerByCif(String cif);
+    ResponseCustomerDetails recoverCustomerByCif(String cif,String staffId);
 
 
     Page<ResponseCustomerDetails> getCustomersPagination(int page, int size);

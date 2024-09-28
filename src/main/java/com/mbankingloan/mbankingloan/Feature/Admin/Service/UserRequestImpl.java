@@ -13,6 +13,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.RegisterU
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.UpdateUser;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseUser;
 import com.mbankingloan.mbankingloan.Feature.Auth.Repository.EmailRepository;
+import com.mbankingloan.mbankingloan.Feature.File.FileRepository;
 import com.mbankingloan.mbankingloan.Mapper.UserMapper;
 import com.mbankingloan.mbankingloan.Util.GenerateStaffID;
 import com.mbankingloan.mbankingloan.Util.GenerateVerificationCode;
@@ -45,6 +46,7 @@ public class UserRequestImpl implements UserRequest {
     private final GenerateStaffID generateStaffID;
     private final GenerateVerificationCode generateVerificationCode;
     private final JavaMailSender mailSender;
+    private final FileRepository fileRepository;
     private final EmailRepository emailRepository;
     @Value("${spring.mail.username}")
     private String adminMail;
@@ -68,12 +70,13 @@ public class UserRequestImpl implements UserRequest {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Roles do not exists");
         }
 
-        List<Role> roles = new ArrayList<>();
-        roles.addAll(checkRoles);
+        List<Role> roles = new ArrayList<>(checkRoles);
         User newUser = userMapper.fromUserRegister(registerUser);
         Branch branch = branchRepository.findById(registerUser.branchCodeId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Branch Not Found"));
         newUser.setRoles(roles);
         newUser.setBranchCode(branch);
+        newUser.setFile(fileRepository.findByuser_id(newUser.getId()));
+        newUser.setProfileImageUrl(fileRepository.findByuser_id(newUser.getId()).getUri());
         newUser.setCreatedAt(LocalDate.now());
         newUser.setIsVerified(false);
         newUser.setIsBlock(true);

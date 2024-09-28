@@ -50,12 +50,7 @@ public class LoanControllerAllStaffPermit {
         return loanRequest.getAllLoanTypes();
     }
 
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_MANAGER', 'SCOPE_ROLE_LOAN-OFFICER', 'SCOPE_ROLE_CSA-OFFICER')")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/getAllLoanAccountTypes")
-    List<ResponseLoanAccountType> getAllLoanAccountTypes() {
-        return loanRequest.getAllLoanAccountTypes();
-    }
+
 
 
 //    @ResponseStatus(HttpStatus.CREATED)

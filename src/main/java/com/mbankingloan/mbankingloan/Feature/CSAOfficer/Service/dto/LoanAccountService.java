@@ -9,9 +9,9 @@ import jakarta.validation.Valid;
 public interface LoanAccountService {
 
 
-    ResponseLoanAccount createLoanAccount(@Valid CreateLoanAccount createLoanAccount);
+    ResponseLoanAccount createLoanAccount(@Valid CreateLoanAccount createLoanAccount, String staffId);
 
-    ResponseLoanAccount deleteLoanAccount(Integer id);
+    ResponseLoanAccount deleteLoanAccount(Integer id,String staffId);
 
-    ResponseLoanAccount drawDownLoan(@Valid DrawDownLoanAccount drawDownLoanAccount);
+    ResponseLoanAccount drawDownLoan(@Valid DrawDownLoanAccount drawDownLoanAccount,String staffId);
 }

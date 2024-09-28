@@ -21,7 +21,6 @@ public class LoanAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // System Generate
     @ManyToMany
     private List<Customer> customer;
 
@@ -36,26 +35,21 @@ public class LoanAccount {
 
 
 
-    // balance will set to LoanAmount of loanApplication if isDrawdown is true
     private BigDecimal balance;
 
-    //system will default set to false unless user set new password
     private Boolean isActive;
 
-    // isDeleted canSet to false is OutstandingBalance in LoanApplication is 0
     private Boolean isDeleted;
 
 
 
     @ManyToOne
-    private LoanAccountType loanAccountType;
+    private User user;
 
 
 
     private LocalDate CreatedAt;
 
 
-    @OneToMany(mappedBy = "ownerId")
-    private List<Transaction> transactionOwner;
 
 }

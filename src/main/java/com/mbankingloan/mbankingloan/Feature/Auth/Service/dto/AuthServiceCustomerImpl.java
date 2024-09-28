@@ -91,7 +91,7 @@ public class AuthServiceCustomerImpl implements AuthServiceCustomer {
 
         JwtClaimsSet refreshJwtClaimsSet = JwtClaimsSet.builder()
                 .id(auth.getName())
-                .subject("Refresh Token")
+                .subject(auth.getName())
                 .issuer(auth.getName())
                 .issuedAt(now)
                 .expiresAt(now.plus(5, ChronoUnit.DAYS))
@@ -132,6 +132,7 @@ public class AuthServiceCustomerImpl implements AuthServiceCustomer {
         // Create access token claims set
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .id(jwt.getId())
+                .subject(auth.getName())
                 .issuedAt(now)
                 .issuer("web")
                 .audience(List.of("nextjs", "reactjs"))
@@ -151,6 +152,7 @@ public class AuthServiceCustomerImpl implements AuthServiceCustomer {
             JwtClaimsSet jwtClaimsSetRefreshToken = JwtClaimsSet.builder()
                     .id(auth.getName())
                     .issuedAt(now)
+                    .subject(auth.getName())
                     .issuer("web")
                     .audience(List.of("nextjs", "reactjs"))
                     .subject("Refresh Token")

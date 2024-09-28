@@ -11,13 +11,13 @@ public interface LoanManagementService {
     List<ResponseLoanApplicationDetails> getAllLoanApplicationDetails();
 
 
-    void bmApproveLoanById(int id);
+    void bmApproveLoanById(int id, String StaffId);
 
-    void bmRejectById(int id);
+    void bmRejectById(int id,String StaffId);
 
-    void headRejectById(int id);
+    void headRejectById(int id,String StaffId);
 
-    void headApproveLoanById(int id);
+    void headApproveLoanById(int id, String StaffId);
 
     ResponseLoanApplicationDetails getLoanApplicationDetailsById(int id);
 }

@@ -28,5 +28,4 @@ public class Branch {
     private Boolean isDeleted;
 
 
-
 }

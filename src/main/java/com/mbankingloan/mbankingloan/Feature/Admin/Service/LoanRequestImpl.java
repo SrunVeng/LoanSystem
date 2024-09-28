@@ -11,10 +11,7 @@ import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoa
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.CreateLoanType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Request.DeleteLoan;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoan;
-import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanAccountType;
 import com.mbankingloan.mbankingloan.Feature.Admin.Service.dto.Response.ResponseLoanType;
-import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.LoanAccountRepository;
-import com.mbankingloan.mbankingloan.Feature.CSAOfficer.Repository.LoanAccountTypeRepository;
 import com.mbankingloan.mbankingloan.Mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +29,6 @@ public class LoanRequestImpl implements LoanRequest {
 
     private final LoanTypeRepository loanTypeRepository;
     private final LoanRepository loanRepository;
-    private final LoanAccountTypeRepository loanAccountTypeRepository;
     private final CollateralTypeRepository collateralTypeRepository;
     private final LoanApplicationRepository loanApplicationRepository;
     private final LoanMapper loanMapper;
@@ -164,7 +160,7 @@ public class LoanRequestImpl implements LoanRequest {
     @Override
     public ResponseLoan getLoanById(int id) {
 
-        if(!loanRepository.existsById(id)) {
+        if (!loanRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found");
         }
 
@@ -173,17 +169,13 @@ public class LoanRequestImpl implements LoanRequest {
 
     @Override
     public ResponseLoanType getLoanTypeById(int id) {
-        if(!loanTypeRepository.existsById(id)) {
+        if (!loanTypeRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "LoanType not found");
         }
 
         return loanMapper.toResponseLoanType(loanTypeRepository.findById(id).orElseThrow());
     }
 
-    @Override
-    public List<ResponseLoanAccountType> getAllLoanAccountTypes() {
-        return loanMapper.toResponseLoanAccountTypeList(loanAccountTypeRepository.findAll());
-    }
 
     // End
 

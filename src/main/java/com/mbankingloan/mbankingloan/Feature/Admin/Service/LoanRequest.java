@@ -28,11 +28,9 @@ public interface LoanRequest {
 
     ResponseLoanType recoverLoanTypeById(int id);
 
-
     ResponseLoan getLoanById(int id);
 
     ResponseLoanType getLoanTypeById(int id);
 
-    List<ResponseLoanAccountType> getAllLoanAccountTypes();
 
 }

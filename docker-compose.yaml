@@ -1,15 +1,31 @@
 services:
- mobile-bakingloan-db:
-  image: postgres:16.3-bullseye
-  container_name: mobile-bankingloan-db
-  ports:
-    - 4457:5432
-  environment:
-    POSTGRES_PASSWORD: admin
-    POSTGRES_USER: mbankingloan
-    POSTGRES_DB: mobile_banking-loan_db
-  volumes:
-    - mobile-banking-vol:/var/lib/postgresql/data
+  loan-banking-api:
+    build: .
+    container_name: loan-banking-api
+    ports:
+      - 16850:8080
+    volumes:
+      - C:/Users/kimsr/OneDrive/Desktop/File:/file-server\
+    networks:
+      - loan-banking-net
+    depends_on:
+      - mobile-bankingloan-db
+  mobile-bankingloan-db:
+    image: postgres:16.3-bullseye
+    container_name: mobile-bankingloan-db
+    ports:
+      - 4457:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: mbankingloan
+      POSTGRES_DB: mobile_banking-loan_db
+    volumes:
+      - mobile-banking-vol:/var/lib/postgresql/data
+    networks:
+      - loan-banking-net
 
 volumes:
   mobile-banking-vol:
+
+networks:
+  loan-banking-net:

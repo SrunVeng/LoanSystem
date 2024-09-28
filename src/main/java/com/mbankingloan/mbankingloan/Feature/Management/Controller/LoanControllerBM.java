@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -35,15 +36,17 @@ public class LoanControllerBM {
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/approveById/{id}")
-    void ApproveLoanById(@PathVariable int id) {
-        loanManagementService.bmApproveLoanById(id);
+    void ApproveLoanById(@PathVariable int id, Principal principal) {
+        String StaffId = principal.getName();
+        loanManagementService.bmApproveLoanById(id,StaffId);
     }
 
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/rejectById/{id}")
-    void rejectById(@PathVariable int id) {
-        loanManagementService.bmRejectById(id);
+    void rejectById(@PathVariable int id, Principal principal) {
+        String StaffId = principal.getName();
+        loanManagementService.bmRejectById(id,StaffId);
     }
 
 

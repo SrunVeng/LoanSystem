@@ -6,5 +6,5 @@ import com.mbankingloan.mbankingloan.Feature.LoanOfficer.Service.dto.Response.Re
 public interface LoanApplicationService {
 
 
-    ResponseLoanApplication createLoanApplication(CreateLoanApplication createLoanApplication, Integer staffId);
+    ResponseLoanApplication createLoanApplication(CreateLoanApplication createLoanApplication, String staffId);
 }

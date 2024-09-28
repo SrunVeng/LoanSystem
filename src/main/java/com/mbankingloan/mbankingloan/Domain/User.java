@@ -41,7 +41,7 @@ public class User {
 
     @OneToMany
     @JsonIgnore
-    List<Customer> customers;
+    private List<Customer> customers;
 
     @Column(nullable = false)
     private LocalDate birthDate;
@@ -78,5 +78,10 @@ public class User {
     private Boolean isCredentialsNonExpired;
     private Boolean isDeleted;
 
+
+    @OneToOne
+    private File file;
+
+    private String profileImageUrl;
 
 }
